@@ -1,38 +1,114 @@
-.App {
-  text-align: center;
+.login-form {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  height: 100%;
+
+}
+.text-center{
+  color:#000099;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-form-item {
+  margin: 0 0 15px 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.app-form-item label {
+  /* text-transform: uppercase; */
+  display: block;
+  font-weight: 400;
+  margin: 0 0 8px 0;
+}
+
+.app-form-item input[type='text'],
+.app-form-item input[type='email'],
+.app-form-item input[type='password'] .app-form-item input[type='text']:focus,
+.app-form-item input[type='text'] :active,
+.app-form-item input[type='email']:focus,
+.app-form-item input[type='email'] :active,
+.app-form-item input[type='password']:focus,
+.app-form-item input[type='password'] :active .app-card {
+  overflow: hidden;
+  position: relative;
+  background: #FFFFFF;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+@media (min-width: 768px) {
+  .app-card {
+    width: 350px;
+    position: relative;
+    left: 700px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app-card .app-card-header-inner {
+  padding: 10px 20px;
+}
+
+.app-card .app-card-content .app-card-content-inner {
+  padding: 20px;
+}
+
+.app-card-content .app-card-content-inner,
+.app-card-content .app-card-content-inner {
+  padding: 40px;
+}
+body{
+  overflow-x: hidden;
+}
+section {
+  padding: 20px 0;
+  max-width: 600px;
+  margin: 0 auto; 
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-left: -30px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+ 
+/* Style your items */
+.my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+  background: grey;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 800px) {
+  .my-masonry-grid {
+    margin-left: -15px; /* gutter size offset */
+  }
+  .my-masonry-grid_column {
+    padding-left: 15px; /* gutter size offset */
+  }
+  .my-masonry-grid_column > div {
+    margin-bottom: 15px; /* space between items */
+  }
+}
+
+.footer {
+  position: relative;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #3b4d64;
+  text-align: center;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bodycontainer{
+  padding-left: 10%;
+  padding-right: 10%;
+ 
 }
