@@ -17,6 +17,8 @@ export class AddCraftComponent extends Component {
             quantity:null,
             shortDesc:null,
             longDesc:null,
+            type:null,
+            category:"Other",
             addCraftState:null
         }
     }
@@ -59,6 +61,10 @@ export class AddCraftComponent extends Component {
     //     console.log(this.state.image)
     // }
 
+    handleChange=(e)=>{
+        this.setState({category:e.target.value})
+    }
+
     handleAddBtnClick=(e)=>{
         e.preventDefault();
         // debugger
@@ -87,6 +93,36 @@ export class AddCraftComponent extends Component {
                             <FormGroup>
                                 <Label>Craft Name/Title</Label>
                                 <Input onChange={this.handleCraftName} type="text" placeholder="Craft Name" />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="exampleSelect">Select</Label>
+                                <Input value={this.state.category} onChange={this.handleChange} type="select" name="select" id="exampleSelect">
+                                    <option>Scrapbooking</option>
+                                    <option>Sewing and quilting</option>
+                                    <option>Kids craft</option>
+                                    <option>Beading</option>
+                                    <option>Embroidery</option>
+                                    <option>Drawing</option>
+                                    <option>Quilling</option>
+                                    <option>Woodcraft</option>
+                                    <option>Crochet & knitting</option>
+                                    <option>Other</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup tag="fieldset">
+                                <legend>Type</legend>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input onClick={() => this.setState({ type: "READY_MADE" })} type="radio" name="radio1" />{' '}
+                                        Ready Made
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input onClick={() => this.setState({ type: "CRAFT_KIT" })} type="radio" name="radio1" />{' '}
+                                        Craft Kit
+                                    </Label>
+                                </FormGroup>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Price</Label>

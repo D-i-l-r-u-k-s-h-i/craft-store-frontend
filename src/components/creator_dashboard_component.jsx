@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Button, ButtonToolbar } from 'react-bootstrap'
 import AddCraftComponent from './add_craft_component';
+import Rater from 'react-rater'
+import CreatorCraftItems from './creatorCraftItems';
 
 export class CreatorDashboardComponent extends Component {
     constructor(props) {
@@ -9,17 +10,21 @@ export class CreatorDashboardComponent extends Component {
             modalShow: false,
         }
     }
+
+    handleOrders=()=>{
+
+    }
+
     render() {
         let modalClose = () => this.setState({ modalShow: false });
         return (
-            <div>
-                <ButtonToolbar>
-                    <Button varient='primary'
-                        onClick={() => this.setState({ modalShow: true })}>
-                        Add New Craft
-                    </Button>
-                    <AddCraftComponent show={this.state.modalShow} onHide={modalClose} />
-                </ButtonToolbar>
+            <div className="bodycontainer">
+                <button type="button" className="btn btn-primary btn-circle btn-xl" onClick={() => this.setState({ modalShow: true })}>
+                    &#43;New Craft</button> <button type="button" class="btn btn btn-warning btn-lg">Orders</button>
+                {/* Rating:<Rater rating={3} total={5} interactive={false} /> */}
+                <AddCraftComponent show={this.state.modalShow} onHide={modalClose} />
+                <br />
+                <CreatorCraftItems/>
             </div>
         )
     }

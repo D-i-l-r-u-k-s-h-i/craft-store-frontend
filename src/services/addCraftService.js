@@ -25,6 +25,8 @@ const addcraft=createLogic({
             itemQuantity:action.payload.quantity,
             shortDescription:action.payload.shortDesc,
             longDescription:action.payload.longDesc,
+            category:action.payload.category,
+            type:action.payload.type
         }
 
         HTTPclient.post(endPoints.ADD_CRAFT,obj)

@@ -4,7 +4,15 @@ import {
 
 import {
     allCraftActions,
-    allCraftTypes
+    allCraftTypes,
+    getCraftByCategoryActions,
+    getCraftByCategoryTypes,
+    getRecentCraftActions,
+    getRecentCraftTypes,
+    searchCraftActions,
+    searchCraftTypes,
+    getCreatorsCraftActions,
+    getCreatorsCraftTypes
 } from "../actions"
 
 import * as endPoints from './endpoints'
@@ -30,7 +38,7 @@ const allcraft = createLogic({
                 dispatch(allCraftActions.allCraftSuccess(resp.data))
             })
             .catch(err => {
-                var errormsg = "Failed to get all vehicles";
+                var errormsg = "Failed to get all craft";
                 if (err && err.code === "ECONNABORTED") {
                     errormsg = "Please check your internet connection.";
                 }
@@ -39,6 +47,129 @@ const allcraft = createLogic({
     }
 })
 
+const craftbycategory = createLogic({
+    type: getCraftByCategoryTypes.GET_CRAFT_BY_CATEGORY,
+    latest: true,
+    debounce: 1000,
+
+    process({
+        action
+    }, dispatch, done) {
+        let HTTPclient = api
+
+        // debugger
+        console.log("payload check", action.payload)
+        let category=action.payload.category
+
+        HTTPclient.get(endPoints.GET_CRAFT_BY_CATEGORY+category)
+            .then(resp => {
+                //debugger
+                console.log(resp.data)
+                dispatch(getCraftByCategoryActions.getCraftByCategorySuccess(resp.data))
+            })
+            .catch(err => {
+                var errormsg = "Failed to get craft";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(getCraftByCategoryActions.getCraftByCategoryFail(errormsg))
+            }).then(() => done());
+    }
+})
+
+const recentcrafts = createLogic({
+    type: getRecentCraftTypes.GET_RECENT_CRAFT,
+    latest: true,
+    debounce: 1000,
+
+    process({
+        action
+    }, dispatch, done) {
+        let HTTPclient = api
+
+        // debugger
+        console.log("payload check", action.payload)
+
+        HTTPclient.get(endPoints.RECENT_CRAFT)
+            .then(resp => {
+                //debugger
+                console.log(resp.data)
+                dispatch(getRecentCraftActions.getRecentCraftSuccess(resp.data))
+            })
+            .catch(err => {
+                var errormsg = "Failed to get crafts";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(getCraftByCategoryActions.getCraftByCategoryFail(errormsg))
+            }).then(() => done());
+    }
+})
+
+const searchcraft = createLogic({
+    type: searchCraftTypes.SEARCH_CRAFT,
+    latest: true,
+    debounce: 1000,
+
+    process({
+        action
+    }, dispatch, done) {
+        let HTTPclient = api
+
+        // debugger
+        console.log("payload check", action.payload)
+        let searchString=action.payload.searchString
+
+        HTTPclient.get(endPoints.SEARCH_CRAFT+searchString)
+            .then(resp => {
+                //debugger
+                console.log(resp.data)
+                dispatch(searchCraftActions.searchCraftSuccess(resp.data))
+            })
+            .catch(err => {
+                var errormsg = "Failed to get craft";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(searchCraftActions.searchCraftFail(errormsg))
+            }).then(() => done());
+    }
+})
+
+const creatorscraft = createLogic({
+    type: getCreatorsCraftTypes.GET_CREATORS_CRAFT,
+    latest: true,
+    debounce: 1000,
+
+    process({
+        action
+    }, dispatch, done) {
+        let HTTPclient = api
+
+        // debugger
+        console.log("payload check", action.payload)
+        let creatorId=action.payload.creatorId
+
+        HTTPclient.get(endPoints.CREATORS_CRAFT+creatorId)
+            .then(resp => {
+                //debugger
+                console.log(resp.data)
+                dispatch(getCreatorsCraftActions.getCreatorsCraftSuccess(resp.data))
+            })
+            .catch(err => {
+                var errormsg = "Failed to get craft";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(getCreatorsCraftActions.getCreatorsCraftFail(errormsg))
+            }).then(() => done());
+    }
+})
+
 export default [
     allcraft,
+    craftbycategory,
+    recentcrafts,
+    searchcraft,
+    creatorscraft
 ]

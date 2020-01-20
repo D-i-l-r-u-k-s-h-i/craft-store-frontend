@@ -112,3 +112,25 @@ section {
   padding-right: 10%;
  
 }
+
+.aboutus{
+  text-align: justify;
+  margin-left: 10%;
+}
+
+.footer_td1{
+  width:60%;
+}
+
+.footer_td2{
+  width:40%;
+}
+
+.btn-circle.btn-xl { 
+  width: 70px; 
+  height: 70px; 
+  padding: 10px 16px; 
+  border-radius: 35px; 
+  font-size: 12px; 
+  text-align: center; 
+} 
