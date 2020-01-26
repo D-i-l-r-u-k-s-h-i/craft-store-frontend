@@ -113,6 +113,12 @@ section {
  
 }
 
+.inputsize{
+  width: 30px;
+  text-align: center;
+  margin-left: 10px;
+}
+
 .aboutus{
   text-align: justify;
   margin-left: 10%;

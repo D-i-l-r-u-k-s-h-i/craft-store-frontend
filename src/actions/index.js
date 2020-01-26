@@ -6,6 +6,13 @@ import * as GetCraftByCategory from './craftByCategory'
 import * as GetRecentCraft from './recentCraft'
 import * as SearchCraft from './searchCraft'
 import * as GetCreatorsCraft from './creatorsCraftItems'
+import * as AddToCart from './addToCart'
+import * as BuyItem from './buyItem'
+import * as ViewCart from './viewCart'
+import * as ChangeQuantity from './changeQuantity'
+import * as RemoveFromCart from './removeFromCart'
+import * as DisplayCardTotal from './displayCartTotal'
+import * as BuyOrder from './buyOrder'
 
 export{
     Login as loginTypes
@@ -39,7 +46,38 @@ export{
     GetCreatorsCraft as getCreatorsCraftTypes
 }
 
+export{
+    AddToCart as addToCartTypes
+}
+
+export{
+    BuyItem as buyItemTypes
+}
+
+export{
+    BuyOrder as buyOrderTypes
+}
+
+export{
+    ViewCart as viewCartTypes
+}
+
+export{
+    ChangeQuantity as changeQuantityTypes
+}
+
+export{
+    RemoveFromCart as removeFromCartTypes
+}
+
+export{
+    DisplayCardTotal as displayCardTotalTypes
+}
+
+
 export const getRecentCraftActions=GetRecentCraft.default
+
+export const displayCardTotalActions=DisplayCardTotal.default
 
 export const getCreatorsCraftActions=GetCreatorsCraft.default
 
@@ -54,3 +92,15 @@ export const allCraftActions=AllCraft.default;
 export const getCraftByCategoryActions=GetCraftByCategory.default;
 
 export const addCraftActions=AddCraft.default;
+
+export const buyItemActions=BuyItem.default;
+
+export const buyOrderActions=BuyOrder.default;
+
+export const addToCartActions=AddToCart.default;
+
+export const viewCartActions=ViewCart.default;
+
+export const removeFromCartActions=RemoveFromCart.default;
+
+export const changeQuantityActions=ChangeQuantity.default;

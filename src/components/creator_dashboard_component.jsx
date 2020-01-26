@@ -20,7 +20,7 @@ export class CreatorDashboardComponent extends Component {
         return (
             <div className="bodycontainer">
                 <button type="button" className="btn btn-primary btn-circle btn-xl" onClick={() => this.setState({ modalShow: true })}>
-                    &#43;New Craft</button> <button type="button" class="btn btn btn-warning btn-lg">Orders</button>
+                    &#43;New Craft</button> <button type="button" className="btn btn btn-warning btn-lg">Orders</button>
                 {/* Rating:<Rater rating={3} total={5} interactive={false} /> */}
                 <AddCraftComponent show={this.state.modalShow} onHide={modalClose} />
                 <br />

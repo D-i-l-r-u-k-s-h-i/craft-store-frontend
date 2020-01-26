@@ -1,6 +1,8 @@
 import Masonry from 'react-masonry-css'
 import React, { Component } from 'react'
-import { allCraftActions ,getCraftByCategoryActions,getRecentCraftActions,searchCraftActions} from '../actions'
+import { allCraftActions ,getCraftByCategoryActions,
+    getRecentCraftActions,searchCraftActions,
+    addToCartActions} from '../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter,Link} from 'react-router-dom'
@@ -12,6 +14,7 @@ import {
     InputGroup,
     InputGroupAddon,Row,ButtonGroup
   } from 'reactstrap';
+import BuyItemModal from './buy_item_modal';
 
 export class AllCraftItems extends Component {
 
@@ -22,7 +25,9 @@ export class AllCraftItems extends Component {
             loaded: false,
             category: null,
             searchString:null,
-            allCraftState: null
+            allCraftState: null,
+            modalShow: false,
+            item:null
         }
     }
 
@@ -50,7 +55,7 @@ export class AllCraftItems extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        // console.log(nextProps)
+        console.log(nextProps)
         let newProps={}
         if (nextProps.craftData && nextProps.craftData !== prevState.craftData) {
             newProps.craftData = nextProps.craftData
@@ -71,11 +76,17 @@ export class AllCraftItems extends Component {
             ...newProps
         };
     }
+    
+    onAddToCartClick=(item)=>{
+        var craftId=item.craftId
+        this.props.addToCartActions.addToCart(craftId)
+    }
 
     render() {
         console.log(this.props)
         console.log(this.state)
 
+        let modalClose = () => this.setState({ modalShow: false });
         const { craftData}=this.state
 
         const breakpointColumnsObj = {
@@ -83,14 +94,16 @@ export class AllCraftItems extends Component {
             1100: 3,
             700: 2,
             500: 1
-          };
+        };
 
-        var items=craftData && craftData.map(function (item) {
+        let items=craftData && craftData.map((item) =>{
             return <div key={item.craftId}>
                 <Card>
                     <CardImg top width="100%" src={item.img} alt="Card image cap" />
                     <CardBody>
-                        <CardTitle className="font-weight-bold">{item.ciName} {localStorage.getItem("user")==item.creator.creatorName?<button type="button" class="btn btn-sm btn-warning" disabled>{item.creator.creatorName}</button>:<Link to={{
+                        <CardTitle className="font-weight-bold">{item.ciName}
+                        {item.availabilityStatus?<div class="badge badge-primary text-wrap">Available</div>:<div class="badge badge-danger text-wrap">Not Available</div>}
+                        {localStorage.getItem("user")==item.creator.creatorName?<button type="button" class="btn btn-sm btn-warning ml-1" disabled>{item.creator.creatorName}</button>:<Link to={{
                         pathname: '/creatorprofile',
                         props: {
                             creator: item.creator
@@ -98,15 +111,17 @@ export class AllCraftItems extends Component {
                     }}
                         id="submit"
                         type="submit"
-                        className="btn btn-outline-warning btn-sm"
-                    >{item.creator.creatorName}</Link>}</CardTitle>
+                        className="btn btn-outline-warning btn-sm ml-1"
+                    >{item.creator.creatorName}</Link>} 
+                  </CardTitle>
                         <CardSubtitle>{item.shortDescription}</CardSubtitle>
                         <CardText className="text-muted">{item.longDescription}</CardText>
                         <CardText className="font-weight-normal">Rs.{item.ciPrice}.00</CardText>
-                        <Button className="btn btn-info ml-1 float-right">Buy</Button>
-                        <Button className="btn btn-secondary float-right">Add to Cart</Button>
+                        {item.availabilityStatus?<div><Button onClick={() => this.setState({ modalShow: true ,item:item})} className="btn btn-info ml-1 float-right">Buy</Button>
+                        <Button onClick={()=>this.onAddToCartClick(item)} className="btn btn-secondary float-right">Add to Cart</Button></div>:null}
                     </CardBody>
                 </Card>
+                
             </div>
         })
         
@@ -137,7 +152,7 @@ export class AllCraftItems extends Component {
                     <Button onClick={() => this.setState({ category: "Crochet & knitting" })} active={this.state.category === "Crochet & knitting"}>Crochet & knitting</Button>
                     <Button onClick={() => this.setState({ category: "Beading" })} active={this.state.category === "Beading"}>Beading</Button>
                     <Button onClick={() => this.setState({ category: "Woodcraft" })} active={this.state.category === "Woodcraft"}>Woodcraft</Button>
-                    <Button onClick={() => this.setState({ category: "Quilling<" })} active={this.state.category === "Quilling<"}>Quilling</Button>
+                    <Button onClick={() => this.setState({ category: "Quilling<" })} active={this.state.category === "Quilling"}>Quilling</Button>
                     <Button onClick={() => this.setState({ category: "Other" })} active={this.state.category === "Other"}>Other</Button>
                     <Button onClick={this.handleAll}><h1>🧚‍♀️</h1>All</Button>
                 </ButtonGroup>
@@ -149,6 +164,7 @@ export class AllCraftItems extends Component {
                     {/* array of JSX items */}
                     {items}
                 </Masonry>
+                {this.state.item!=null?<BuyItemModal show={this.state.modalShow} onHide={modalClose} props={this.state.item}/>:null}
             </div>
         )
     }
@@ -159,7 +175,8 @@ function mapDispatchToProps(dispatch) {
         allCraftActions: bindActionCreators(allCraftActions, dispatch),
         getCraftByCategoryActions: bindActionCreators(getCraftByCategoryActions, dispatch),
         getRecentCraftActions:bindActionCreators(getRecentCraftActions, dispatch),
-        searchCraftActions:bindActionCreators(searchCraftActions, dispatch)
+        searchCraftActions:bindActionCreators(searchCraftActions, dispatch),
+        addToCartActions:bindActionCreators(addToCartActions, dispatch),
     }
 }
 
@@ -167,6 +184,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
     return {
         ...state.AllCraft,
+        ...state.HandleOrders
     }
 }
 

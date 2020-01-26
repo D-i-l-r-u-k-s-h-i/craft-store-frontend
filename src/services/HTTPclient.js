@@ -62,7 +62,7 @@ export const setAuth = () => {
 
 export const post=(route,data)=>{
     instance || setAuth()
-    return instance.post(route,JSON.stringify(data))
+    return instance.post(route,data == null ? { data: {} } :  data= JSON.stringify(data))
 }
 
 export const get = (route, data) => {
