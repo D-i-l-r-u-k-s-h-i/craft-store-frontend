@@ -35,10 +35,12 @@ export class CartItemCard extends Component {
         }
 
         this.props.changeQuantityActions.changeQuantity(obj)
-        if(this.props.quantityData!=null){
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.quantityData!==prevProps.quantityData){
             this.props.refresh()
         }
-        
     }
 
     removeItemClick=()=>{

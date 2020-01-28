@@ -13,7 +13,11 @@ import {addToCartTypes,
     displayCardTotalActions,
     displayCardTotalTypes,
     buyOrderActions,
-    buyOrderTypes
+    buyOrderTypes,
+    getPastOrderActions,
+    getPastOrderTypes,
+    getCreatorsOrdersActions,
+    getCreatorsOrdersTypes
 } from "../actions"
 
 import * as endPoints from './endpoints'
@@ -238,6 +242,64 @@ const buyorder =createLogic({
     }
 })
 
+const pastorders =createLogic({
+    type:getPastOrderTypes.GET_PAST_ORDERS,
+    latest:true,
+    debounce:1000,
+
+    process({
+        action
+    },dispatch,done){
+        let HTTPclient=api
+
+        // debugger
+        console.log("payload check",action.payload)
+
+        HTTPclient.get(endPoints.PAST_ORDERS)
+            .then(resp=> {
+                // debugger
+                console.log(resp.data)
+                dispatch(getPastOrderActions.getPastOrdersSuccess(resp.data))
+            })
+            .catch(err=>{
+                var errormsg="Failed to get Past Orders";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(getPastOrderActions.getPastOrdersFail(errormsg))
+            }).then(()=>done());
+    }
+})
+
+const creatorsorders =createLogic({
+    type:getCreatorsOrdersTypes.GET_CREATORS_ORDERS,
+    latest:true,
+    debounce:1000,
+
+    process({
+        action
+    },dispatch,done){
+        let HTTPclient=api
+
+        // debugger
+        console.log("payload check",action.payload)
+
+        HTTPclient.get(endPoints.CREATOR_CRAFT_ORDERS)
+            .then(resp=> {
+                // debugger
+                console.log(resp.data)
+                dispatch(getCreatorsOrdersActions.getCreatorsOrdersSuccess(resp.data))
+            })
+            .catch(err=>{
+                var errormsg="Failed to get Past Orders";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(getCreatorsOrdersActions.getCreatorsOrdersFail(errormsg))
+            }).then(()=>done());
+    }
+})
+
 export default [
     addtocart,
     buyitem,
@@ -245,5 +307,7 @@ export default [
     changeqty,
     removefromcart,
     ordertot,
-    buyorder
+    buyorder,
+    pastorders,
+    creatorsorders
 ]

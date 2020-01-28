@@ -9,6 +9,7 @@ import HomePage from './modules/home_page';
 import AdminsPage from './modules/admins_page';
 import CartPage from './modules/cart_page';
 import CreatorProfilePage from './modules/creator_profile_page';
+import ViewAllOrdersPage from './modules/view_all_orders_page';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route index={1} exact={true} path={'/admin'} component={AdminsPage}/>
       <Route index={1} exact={true} path={'/cart'} component={CartPage}/>
       <Route index={1} exact={true} path={'/creatorprofile'} component={CreatorProfilePage}/>
+      <Route index={1} exact={true} path={'/pastorders'} component={ViewAllOrdersPage}/>
       </Switch>
     </Router> 
   );

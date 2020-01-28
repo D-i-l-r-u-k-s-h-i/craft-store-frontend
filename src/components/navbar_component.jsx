@@ -19,21 +19,21 @@ function NavBarComponent() {
                 <NavDropdown title="&#9881; Options" id="nav-dropdown" >
                     <NavDropdown.Item eventKey="4.1">Profile</NavDropdown.Item>
                     <LinkContainer to={{
-                        pathname: '/orders1',
-                        props: {
-                            optionSelected: "CURRENT"
-                        }
+                        pathname: '/pastorders',
+                        // props: {
+                        //     optionSelected: "CURRENT"
+                        // }
                     }}>
-                        <NavDropdown.Item eventKey="4.2">Pending Orders</NavDropdown.Item>
+                        <NavDropdown.Item eventKey="4.2">Past Orders</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to={{
+                    {/* <LinkContainer to={{
                         pathname: '/orders2',
                         props: {
                             optionSelected: "PAST"
                         }
                     }}>
                         <NavDropdown.Item eventKey="4.3">Order History</NavDropdown.Item>
-                    </LinkContainer>
+                    </LinkContainer> */}
                     <NavDropdown.Divider />
                     <LinkContainer onClick={() => {
 

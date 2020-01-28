@@ -8,6 +8,8 @@ import {
   import { connect } from 'react-redux'
   import { bindActionCreators } from 'redux'
   import { withRouter} from 'react-router-dom'
+import ConfirmDeleteModal from './confirmDeleteModal';
+import UpdateCraftComponent from './update_craft_component';
 
 export class CreatorCraftItems extends Component {
     constructor(props){
@@ -15,7 +17,11 @@ export class CreatorCraftItems extends Component {
         this.state={
             craftData:null,
             creatorId:0,
-            allCraftState: null
+            allCraftState: null,
+            editModalShow: false,
+            modalShow: false,
+            item:null,
+            page:null
         }
     }
 
@@ -47,6 +53,9 @@ export class CreatorCraftItems extends Component {
     }
 
     render() {
+        let modalClose = () => this.setState({ modalShow: false });
+        let editModalClose = () => this.setState({ editModalShow: false });
+
         const { craftData}=this.state
         console.log()
 
@@ -58,7 +67,7 @@ export class CreatorCraftItems extends Component {
         };
 
         
-        var items = craftData && craftData.map(function (item) {
+        let items = Array.isArray(craftData) &&craftData && craftData.map((item)=> {
             return <div key={item.craftId}>
                 <Card>
                     <CardImg top width="100%" src={item.img} alt="Card image cap" />
@@ -67,12 +76,22 @@ export class CreatorCraftItems extends Component {
                         <CardSubtitle>{item.shortDescription}</CardSubtitle>
                         <CardText className="text-muted">{item.longDescription}</CardText>
                         <CardText className="font-weight-normal">Rs.{item.ciPrice}.00</CardText>
-                        <Button className="btn btn-info ml-1 float-right">Edit</Button>
-                        <Button className="btn btn-danger float-right">Remove</Button>
+                        <Button onClick={() => this.setState({ editModalShow: true ,item:item})} className="btn btn-info ml-1 float-right">Edit</Button>
+                        <Button onClick={() => this.setState({ modalShow: true ,item:item})} className="btn btn-danger float-right">Remove</Button>
                     </CardBody>
                 </Card>
             </div>
         })
+
+        // let active = 2;
+        // let nums = [];
+        // for (let number = 1; number <= 5; number++) {
+        //     nums.push(
+        //         <Pagination.Item key={number} active={number === active}>
+        //             {number}
+        //         </Pagination.Item>,
+        //     );
+        // }
         
         return (
             <div>
@@ -85,6 +104,9 @@ export class CreatorCraftItems extends Component {
                 </Masonry>
 
                 {/* reviews component- add here later */}
+
+                <ConfirmDeleteModal show={this.state.modalShow} onHide={modalClose} props={this.state.item}/>
+                <UpdateCraftComponent show={this.state.editModalShow} onHide={editModalClose} props={this.state.item}/>
             </div>
         )
     }

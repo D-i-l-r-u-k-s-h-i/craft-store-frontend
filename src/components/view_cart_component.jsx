@@ -14,7 +14,8 @@ export class ViewCartComponent extends Component {
             orderData:null,
             totalData:null,
             visible:false,
-            purchaseData:null
+            purchaseData:null,
+            rerender:false
         }
     }
 
@@ -66,7 +67,18 @@ export class ViewCartComponent extends Component {
     }
 
     onRefresh=()=>{
-        window.location.reload();
+        this.setState({
+            rerender:!this.state.rerender
+        })
+    }
+
+    componentDidUpdate(prevProps,prevState){
+        console.log(prevProps)
+        console.log(prevState)
+        if(this.state.rerender != prevState.rerender){
+            this.props.displayCardTotalActions.displayCardTotal(this.state)
+        }
+        
     }
 
     render() {
@@ -87,7 +99,7 @@ export class ViewCartComponent extends Component {
                         </tr>
                     </table>
                     <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
-                        {this.props.purchaseData}! Order Total: 
+                        {this.props.purchaseData}!   Order Total: Rs.{totalData}.00
                     </Alert>
                     <button type="button" onClick={this.onBuyOrderClick} className="btn btn-success float-right">Buy</button><br/><hr/> </div>
                 }

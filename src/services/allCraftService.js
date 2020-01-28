@@ -12,7 +12,11 @@ import {
     searchCraftActions,
     searchCraftTypes,
     getCreatorsCraftActions,
-    getCreatorsCraftTypes
+    getCreatorsCraftTypes,
+    deleteCraftActions,
+    deleteCraftTypes,
+    confirmDeliveryActions,
+    confirmDeliveryTypes
 } from "../actions"
 
 import * as endPoints from './endpoints'
@@ -166,10 +170,72 @@ const creatorscraft = createLogic({
     }
 })
 
+const deletecraft = createLogic({
+    type: deleteCraftTypes.DELETE_CRAFT,
+    latest: true,
+    debounce: 1000,
+
+    process({
+        action
+    }, dispatch, done) {
+        let HTTPclient = api
+
+        // debugger
+        console.log("payload check", action.payload)
+        let craftId=action.payload
+
+        HTTPclient.post(endPoints.DELETE_CRAFT+craftId)
+            .then(resp => {
+                //debugger
+                console.log(resp.data)
+                dispatch(deleteCraftActions.deleteCraftSuccess(resp.data))
+            })
+            .catch(err => {
+                var errormsg = "Failed to get craft";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(deleteCraftActions.deleteCraftFail(errormsg))
+            }).then(() => done());
+    }
+})
+
+const confirmdelivery = createLogic({
+    type: confirmDeliveryTypes.CONFIRM_DELIVERY,
+    latest: true,
+    debounce: 1000,
+
+    process({
+        action
+    }, dispatch, done) {
+        let HTTPclient = api
+
+        // debugger
+        console.log("payload check", action.payload)
+        let orderCraftId=action.payload
+
+        HTTPclient.post(endPoints.CRAFT_DELIVERY+orderCraftId)
+            .then(resp => {
+                //debugger
+                console.log(resp.data)
+                dispatch(confirmDeliveryActions.confirmDeliverySuccess(resp.data))
+            })
+            .catch(err => {
+                var errormsg = "Failed to get craft";
+                if (err && err.code === "ECONNABORTED") {
+                    errormsg = "Please check your internet connection.";
+                }
+                dispatch(confirmDeliveryActions.confirmDeliveryFail(errormsg))
+            }).then(() => done());
+    }
+})
+
 export default [
     allcraft,
     craftbycategory,
     recentcrafts,
     searchcraft,
-    creatorscraft
+    creatorscraft,
+    deletecraft,
+    confirmdelivery
 ]
