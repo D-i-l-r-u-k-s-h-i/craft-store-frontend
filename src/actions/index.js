@@ -18,6 +18,12 @@ import * as UpdateCraft from './updateCraft'
 import * as GetPastOrders from './getPastOrders'
 import * as GetCreatorsOrders from './creatorOrders'
 import * as ConfirmDelivery from './confirmDelivery'
+import * as GetCraftsForReview from './craftsForReviews'
+import * as GetCreatorForRating from './creatorsForRatings'
+import * as AddRating from './addRating'
+import * as AddReview from './addReview'
+import * as GetReviews from './reviews'
+
 
 export{
     Login as loginTypes
@@ -99,6 +105,36 @@ export{
     ConfirmDelivery as confirmDeliveryTypes
 }
 
+export{
+    GetCraftsForReview as craftsForReviewTypes
+}
+
+export{
+    GetCreatorForRating as creatorForRatingTypes
+}
+
+export{
+    AddReview as addReviewTypes
+}
+
+export{
+    GetReviews as getReviewTypes
+}
+
+export{
+    AddRating as addRatingTypes
+}
+
+
+export const addRatingActions=AddRating.default;
+
+export const addReviewActions=AddReview.default;
+
+export const getReviewActions=GetReviews.default;
+
+export const craftsForReviewActions=GetCraftsForReview.default
+
+export const creatorForRatingActions=GetCreatorForRating.default
 
 export const confirmDeliveryActions=ConfirmDelivery.default
 

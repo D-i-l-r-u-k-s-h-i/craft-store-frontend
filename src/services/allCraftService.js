@@ -153,8 +153,9 @@ const creatorscraft = createLogic({
         // debugger
         console.log("payload check", action.payload)
         let creatorId=action.payload.creatorId
+        let page=action.payload.page
 
-        HTTPclient.get(endPoints.CREATORS_CRAFT+creatorId)
+        HTTPclient.get(endPoints.CREATORS_CRAFT+creatorId+"/"+page)
             .then(resp => {
                 //debugger
                 console.log(resp.data)

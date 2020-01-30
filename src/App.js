@@ -10,6 +10,7 @@ import AdminsPage from './modules/admins_page';
 import CartPage from './modules/cart_page';
 import CreatorProfilePage from './modules/creator_profile_page';
 import ViewAllOrdersPage from './modules/view_all_orders_page';
+import 'react-rater/lib/react-rater.css'
 
 
 function App() {

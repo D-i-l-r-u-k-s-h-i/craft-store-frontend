@@ -1,4 +1,12 @@
-import {allCraftTypes,getCraftByCategoryTypes,getRecentCraftTypes,searchCraftTypes,getCreatorsCraftTypes,deleteCraftTypes,addCraftTypes,updateCraftTypes} from '../actions'
+import {allCraftTypes,
+    getCraftByCategoryTypes,
+    getRecentCraftTypes,
+    searchCraftTypes,
+    getCreatorsCraftTypes,
+    deleteCraftTypes,
+    addCraftTypes,
+    updateCraftTypes,
+    craftsForReviewTypes} from '../actions'
 
 import {handleActions} from "redux-actions"
 
@@ -156,6 +164,15 @@ export default handleActions({
         }
     },
     [deleteCraftTypes.FAIL_DELETE_CRAFT]:(state,{payload})=>({
+        ...state,loading:false,craftData:null
+    }),
+    [craftsForReviewTypes.GET_CRAFTS_FOR_REVIEW]:(state,{payload})=>({
+        ...state,loading:true
+    }),
+    [craftsForReviewTypes.SUCCESS_GET_CRAFTS_FOR_REVIEW]:(state,{payload})=>({
+        ...state,loading:false,craftData:payload
+    }),
+    [craftsForReviewTypes.FAIL_GET_CRAFTS_FOR_REVIEW]:(state,{payload})=>({
         ...state,loading:false,craftData:null
     }),
 },initialState)

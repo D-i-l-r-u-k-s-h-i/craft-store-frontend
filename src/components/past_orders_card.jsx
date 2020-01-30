@@ -9,7 +9,7 @@ function PastOrdersCard(props) {
             <Row>
                 <Col sm="10">
                     <Card body outline color="info">
-                        <CardTitle>Purchase Date: {purchaseDate}</CardTitle>
+                        <CardTitle>Purchase Date: <span className="text-muted">{purchaseDate}</span></CardTitle>
                         <CardText><ul>{orderItemsList && orderItemsList.map(item=>{
                           return(
                             <div>
@@ -17,10 +17,13 @@ function PastOrdersCard(props) {
                                <table className="table table-borderless">
                                <li><tr>
                                        <td>
-                                            {item.craftItem.ciName}
+                                            <div className="font-weight-bold">{item.craftItem.ciName}</div>
                                        </td>
                                        <td>
-                                            {item.quantity} *  Rs.{item.craftItem.ciPrice}.00     {item.status}
+                                            {item.quantity} x  Rs.{item.craftItem.ciPrice}.00  
+                                       </td>
+                                       <td>
+                                            <div className="text-primary">{item.status}</div>
                                        </td>
                                        </tr></li> 
                                </table>
@@ -30,7 +33,7 @@ function PastOrdersCard(props) {
                         })}
                         </ul></CardText>
                         <CardText>Order Total: Rs.{orderTotal}.00</CardText>
-                        <CardText><div className="float-right">Order Status: {orderStatus} </div></CardText>
+                        <CardText><div className="float-right">Order Status: <span className="text-muted">{orderStatus}</span></div></CardText>
                     </Card>
                 </Col>
             </Row>

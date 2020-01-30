@@ -2,26 +2,29 @@ import React, { Component } from 'react'
 import Masonry from 'react-masonry-css'
 import {
     Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button
+    CardTitle, CardSubtitle, Button,Row,Col
   } from 'reactstrap';
-  import { getCreatorsCraftActions} from '../actions'
+  import { getCreatorsCraftActions,getReviewActions} from '../actions'
   import { connect } from 'react-redux'
   import { bindActionCreators } from 'redux'
   import { withRouter} from 'react-router-dom'
 import ConfirmDeleteModal from './confirmDeleteModal';
 import UpdateCraftComponent from './update_craft_component';
+import { Pagination} from 'react-bootstrap'
 
 export class CreatorCraftItems extends Component {
     constructor(props){
         super(props);
         this.state={
             craftData:null,
+            ReviewData:null,
             creatorId:0,
+            noOfPages:1,
             allCraftState: null,
             editModalShow: false,
             modalShow: false,
             item:null,
-            page:null
+            active:1
         }
     }
 
@@ -31,6 +34,11 @@ export class CreatorCraftItems extends Component {
         if (nextProps.craftData && nextProps.craftData !== prevState.craftData) {
             newProps.craftData = nextProps.craftData
         }
+
+        if (nextProps.ReviewData && nextProps.ReviewData !== prevState.ReviewData) {
+            newProps.ReviewData = nextProps.ReviewData
+        }
+
         if (nextProps.location.hash && (nextProps.location.hash !== prevState.hash)) {
             return {
                 hash: nextProps.location.hash
@@ -40,6 +48,7 @@ export class CreatorCraftItems extends Component {
             return{
                loaded: true,
                craftData:newProps.craftData,
+               noOfPages:newProps.craftData && newProps.craftData[0].noOfPages
             }
         }
         // console.log(newProps)
@@ -49,15 +58,32 @@ export class CreatorCraftItems extends Component {
     }
 
     componentDidMount(){
-        this.props.getCreatorsCraftActions.getCreatorsCraft(this.state)
+        let obj={
+            page:0,
+            creatorId:this.state.creatorId
+        }
+        this.props.getCreatorsCraftActions.getCreatorsCraft(obj)
+
+        this.props.getReviewActions.getReview(this.state.creatorId)
     }
+
+    pageChanged=(e)=>{
+        this.setState({active:parseInt(e.target.text)})
+        console.log(e.target.text)
+        let obj={
+            page:parseInt(e.target.text)-1,
+            creatorId:this.state.creatorId
+        }
+
+        this.props.getCreatorsCraftActions.getCreatorsCraft(obj)
+   }
 
     render() {
         let modalClose = () => this.setState({ modalShow: false });
         let editModalClose = () => this.setState({ editModalShow: false });
 
-        const { craftData}=this.state
-        console.log()
+        const { craftData, ReviewData}=this.state
+        console.log(ReviewData)
 
         const breakpointColumnsObj = {
             default: 4,
@@ -83,16 +109,18 @@ export class CreatorCraftItems extends Component {
             </div>
         })
 
-        // let active = 2;
-        // let nums = [];
-        // for (let number = 1; number <= 5; number++) {
-        //     nums.push(
-        //         <Pagination.Item key={number} active={number === active}>
-        //             {number}
-        //         </Pagination.Item>,
-        //     );
-        // }
+
+        let nums = [];
+        for (let number = 1; number <= this.state.noOfPages; number++) {
+            nums.push(
+                <Pagination.Item key={number} active={number === this.state.active}>
+                    {number}
+                </Pagination.Item>,
+            );
+        }
         
+        console.log(this.state)
+
         return (
             <div>
                  <Masonry
@@ -102,11 +130,38 @@ export class CreatorCraftItems extends Component {
                     {/* array of JSX items */}
                     {items}
                 </Masonry>
+                <Pagination onClick={this.pageChanged} >{nums}</Pagination>
 
                 {/* reviews component- add here later */}
 
                 <ConfirmDeleteModal show={this.state.modalShow} onHide={modalClose} props={this.state.item}/>
                 <UpdateCraftComponent show={this.state.editModalShow} onHide={editModalClose} props={this.state.item}/>
+
+                <hr/>
+                <h3>Reviews for Craft Items({ReviewData && ReviewData.length})</h3><br/>
+                {ReviewData && ReviewData.map(property => {
+                    return( 
+                        <Row>
+                            <Col sm="10">
+                                <Card body outline color="info">
+                                    <Row>
+                                    <Col md="2">
+                                            <CardImg
+                                                src={property.craftItem.img}
+                                            />
+                                        </Col>
+                                        <Col>
+                                            <CardTitle><div className="font-weight-bold">{property.craftItem.ciName}</div></CardTitle>
+                                            <CardText className="font-weight-normal">{property.reviewDescription} <span className="text-secondary">-{property.user.username}-</span></CardText>
+                                            <CardText className="text-muted float-right">{property.date}</CardText>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        </Row>
+                    ) 
+                 })} 
+                <hr/>
             </div>
         )
     }
@@ -114,6 +169,7 @@ export class CreatorCraftItems extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         getCreatorsCraftActions: bindActionCreators(getCreatorsCraftActions, dispatch),
+        getReviewActions:bindActionCreators(getReviewActions, dispatch),
     }
 }
 
@@ -121,6 +177,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
     return {
         ...state.AllCraft,
+        ...state.Reviews
     }
 }
 
