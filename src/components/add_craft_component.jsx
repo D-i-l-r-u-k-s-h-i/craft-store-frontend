@@ -20,7 +20,8 @@ export class AddCraftComponent extends Component {
             type:null,
             category:"Other",
             // craftData:null,
-            addCraftState:null
+            addCraftState:null,
+            selectedFile:null
         }
     }
     
@@ -53,14 +54,19 @@ export class AddCraftComponent extends Component {
         this.setState({longDesc:e.target.value})
     }
 
-    handleUrl=(e)=>{
-        this.setState({image:e.target.value})
-    }
+    fileChangeHandler = (event) => {
+        console.log(event.target.files)
+        
+        this.setState({
+            selectedFile: event.target.files[0]
+        });
 
-    // fileChangedHandler = (event) => {
-    //     this.setState({ image: event.target.files[0] })
-    //     console.log(this.state.image)
-    // }
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0])
+        reader.onload = () => {
+            this.setState({image: reader.result});
+        };
+    }
 
     handleChange=(e)=>{
         this.setState({category:e.target.value})
@@ -69,8 +75,22 @@ export class AddCraftComponent extends Component {
     handleAddBtnClick=(e)=>{
         e.preventDefault();
         // debugger
-        console.log(this.props)
-        this.props.addCraftActions.addCraft(this.state)
+        // console.log(this.state.selectedFile)
+        let {name,price,quantity,shortDesc,longDesc,type,category,selectedFile,image} =this.state
+
+        const data = new FormData() 
+        data.append('imgFile', selectedFile,selectedFile.name)
+        
+        data.append('b64image',image)
+        data.append('ciName',name)
+        data.append('ciPrice',price)
+        data.append('itemQuantity', quantity)
+        data.append('shortDescription', shortDesc)
+        data.append('longDescription', longDesc)
+        data.append('type', type)
+        data.append('category', category)
+
+        this.props.addCraftActions.addCraft(data)
         this.props.onHide()
     }
 
@@ -85,7 +105,7 @@ export class AddCraftComponent extends Component {
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            {/* {property.vehicleName} */}
+
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -94,11 +114,11 @@ export class AddCraftComponent extends Component {
                             <h2 className="text-center">Add Crafts</h2><hr />
                             <FormGroup>
                                 <Label>Craft Name/Title</Label>
-                                <Input onChange={this.handleCraftName} type="text" placeholder="Craft Name" />
+                                <Input onChange={this.handleCraftName} type="text" name="ciName" placeholder="Craft Name" />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="exampleSelect">Select</Label>
-                                <Input value={this.state.category} onChange={this.handleChange} type="select" name="select" id="exampleSelect">
+                                <Input value={this.state.category} onChange={this.handleChange} type="select" name="category" id="exampleSelect">
                                     <option>Scrapbooking</option>
                                     <option>Sewing and quilting</option>
                                     <option>Kids craft</option>
@@ -115,46 +135,40 @@ export class AddCraftComponent extends Component {
                                 <legend>Type</legend>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input onClick={() => this.setState({ type: "READY_MADE" })} type="radio" name="radio1" />{' '}
+                                        <Input onClick={() => this.setState({ type: "READY_MADE" })} type="radio" name="type" />{' '}
                                         Ready Made
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input onClick={() => this.setState({ type: "CRAFT_KIT" })} type="radio" name="radio1" />{' '}
+                                        <Input onClick={() => this.setState({ type: "CRAFT_KIT" })} type="radio" name="type" />{' '}
                                         Craft Kit
                                     </Label>
                                 </FormGroup>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Price</Label>
-                                <Input onChange={this.handlePrice} type="text" placeholder="Price per item" />
+                                <Input onChange={this.handlePrice} type="number" name="ciPrice" placeholder="Price per item" />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Quantity</Label>
-                                <Input onChange={this.handlequantity} type="text" placeholder="No. of items" />
+                                <Input onChange={this.handlequantity} type="number" name="itemQuantity" placeholder="No. of items" />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Short description</Label>
-                                <Input onChange={this.handleShortDesc} type="text" placeholder="Short description" />
+                                <Input onChange={this.handleShortDesc} type="text" name="shortDescription" placeholder="Short description" />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Long description</Label>
-                                <Input onChange={this.handlelongDesc} type="textarea" placeholder="Long description" />
+                                <Input onChange={this.handlelongDesc} type="textarea" name="longDescription" placeholder="Long description" />
                             </FormGroup>
-                            {/* for now to add img urls */}
                             <FormGroup>
-                                <Label>Image URL</Label>
-                                <Input onChange={this.handleUrl} type="text" placeholder="Image URL" />
-                            </FormGroup>
-
-                            {/* <FormGroup>
                                 <Label for="exampleFile">File</Label>
-                                <Input type="file" name="file" onChange={this.fileChangedHandler} id="exampleFile" />
+                                <Input type="file" name="imgFile" onChange={this.fileChangeHandler} /** id="exampleFile"*/ />
                                 <FormText color="muted">
                                     Add image of your craft here
                                     </FormText>
-                            </FormGroup> */}
+                            </FormGroup>
                             <Button onClick={this.handleAddBtnClick} className="btn-lg btn-dark btn-block" type="submit">Add</Button>
                         </Form>
                     </Modal.Body>

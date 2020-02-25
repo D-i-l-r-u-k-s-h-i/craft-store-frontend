@@ -69,15 +69,18 @@ export default handleActions({
     }),
     [addCraftTypes.SUCCESS_ADD_CRAFT]:(state,{payload})=>{
         console.log(state)
+
+        var object = {};
+        state.addItem.craftData.forEach((value, key) => {
+            object[key] = value
+        });
+        
+        console.log(object)        
+
         if (state.craftData && Array.isArray(state.craftData) && state.craftData.length !== 0) {
-            let obj={
-                ciName:state.addItem.craftData.name,
-                ciPrice:state.addItem.craftData.price,
-                shortDescription:state.addItem.craftData.shortDesc,
-                longDescription:state.addItem.craftData.longDesc,
-                img:state.addItem.craftData.image
-            }
-            return state.craftData.push(obj);
+            object.imgFile=object.b64image.startsWith('data:image/png;base64,')?object.b64image.replace('data:image/png;base64,','') : object.b64image.replace('data:image/jpeg;base64,','')
+            console.log(object)    
+            return state.craftData.push(object);
         }
         
         return {
@@ -102,23 +105,30 @@ export default handleActions({
     }),
     [updateCraftTypes.SUCCESS_UPDATE_CRAFT]:(state,{payload})=>{
         console.log(state)
+
+        var object = {};
+        state.addItem.craftData.forEach((value, key) => {
+            object[key] = value
+        });
+        
+        console.log(object)
+
         if (state.craftData && Array.isArray(state.craftData) && state.craftData.length !== 0) {
             state.craftData && state.craftData.map((removeId, index) => {
-                console.log(removeId.craftId)
-                console.log(state.addItem.craftData.craftid)
-                if (removeId.craftId == state.addItem.craftData.craftid) {
-                    let obj={
-                        craftId:removeId.craftId,
-                        ciName:state.addItem.craftData.name!=null? state.addItem.craftData.name:removeId.ciName,
-                        ciPrice:state.addItem.craftData.price!=0 ? state.addItem.craftData.price:removeId.ciPrice,
-                        shortDescription:state.addItem.craftData.shortDesc !=null? state.addItem.craftData.shortDesc:removeId.shortDescription,
-                        longDescription:state.addItem.craftData.longDesc !=null? state.addItem.craftData.longDesc:removeId.longDescription,
-                        img:state.addItem.craftData.image !=null ?state.addItem.craftData.image:removeId.img
-                    }
-                    console.log(obj)
-                    return state.craftData.splice(index,1, obj)
+                // console.log(removeId)
+                // console.log(object)
+                if (removeId.craftId == object.craftId) {
+                    
+                    object.ciName=object && object.hasOwnProperty('ciName') ?object.ciName:object.ciName=removeId.ciName
+                    object.ciPrice=object && object.hasOwnProperty('ciPrice')?object.ciPrice :object.ciPrice=removeId.ciPrice
+                    object.shortDescription=object && object.hasOwnProperty('shortDescription')?object.shortDescription:object.shortDescription=removeId.shortDescription
+                    object.longDescription=object && object.hasOwnProperty('longDescription')?object.longDescription:object.longDescription=removeId.longDescription
+                    object.imgFile=object && object.hasOwnProperty('imgFile')?(object.imgFile=object.b64image.startsWith('data:image/png;base64,')?object.b64image.replace('data:image/png;base64,','') : object.b64image.replace('data:image/jpeg;base64,','')):object.imgFile=removeId.imgFile
+                    
+                    console.log(object)
+                    return state.craftData.splice(index, 1, object)
                 }
-            })
+                })
 
         }
         

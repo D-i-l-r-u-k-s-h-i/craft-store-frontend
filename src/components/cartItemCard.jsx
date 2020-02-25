@@ -49,7 +49,7 @@ export class CartItemCard extends Component {
 
     render() {
         console.log(this.props)
-        const {ciName,img,ciPrice,shortDescription,itemQuantity}=this.props.props.craftItem
+        const {ciName,imgFile,ciPrice,shortDescription,itemQuantity}=this.props.props.craftItem
 
         return (
             <div>
@@ -59,7 +59,7 @@ export class CartItemCard extends Component {
                             <Row>
                                 <Col md="2">
                                     <CardImg
-                                        src={img}
+                                        src={`data:image/png;base64,${imgFile}`}
                                     />
                                 </Col>
                                 <Col>

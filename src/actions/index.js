@@ -23,6 +23,8 @@ import * as GetCreatorForRating from './creatorsForRatings'
 import * as AddRating from './addRating'
 import * as AddReview from './addReview'
 import * as GetReviews from './reviews'
+import * as GetNotifications from './getNotifications'
+import * as AddAdmin from './addAdmin'
 
 
 export{
@@ -39,6 +41,10 @@ export{
 
 export{
     AddCraft as addCraftTypes
+}
+
+export{
+    AddAdmin as addAdminTypes
 }
 
 export{
@@ -122,6 +128,10 @@ export{
 }
 
 export{
+    GetNotifications as getNotificationTypes
+}
+
+export{
     AddRating as addRatingTypes
 }
 
@@ -142,6 +152,8 @@ export const getCreatorsOrdersActions=GetCreatorsOrders.default
 
 export const getPastOrderActions=GetPastOrders.default
 
+export const getNotificationsActions=GetNotifications.default
+
 export const getRecentCraftActions=GetRecentCraft.default
 
 export const displayCardTotalActions=DisplayCardTotal.default
@@ -159,6 +171,8 @@ export const allCraftActions=AllCraft.default;
 export const getCraftByCategoryActions=GetCraftByCategory.default;
 
 export const addCraftActions=AddCraft.default;
+
+export const addAdminActions=AddAdmin.default;
 
 export const updateCraftActions=UpdateCraft.default;
 

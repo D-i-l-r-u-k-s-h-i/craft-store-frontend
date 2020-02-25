@@ -1,4 +1,4 @@
-import {signUpTypes} from '../actions'
+import {signUpTypes, addAdminTypes} from '../actions'
 
 import {handleActions} from "redux-actions"
 
@@ -14,6 +14,15 @@ export default handleActions({
         ...state,loading:false,SignUpData:payload
     }),
     [signUpTypes.FAIL_SIGN_UP]:(state,{payload})=>({
+        ...state,loading:false,SignUpData:null
+    }),
+    [addAdminTypes.ADD_ADMIN]:(state,{payload})=>({
+        ...state,loading:true
+    }),
+    [addAdminTypes.SUCCESS_ADD_ADMIN]:(state,{payload})=>({
+        ...state,loading:false,SignUpData:payload
+    }),
+    [addAdminTypes.FAIL_ADD_ADMIN]:(state,{payload})=>({
         ...state,loading:false,SignUpData:null
     }),
 },initialState)

@@ -5,6 +5,7 @@ import { buyItemActions} from '../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter} from 'react-router-dom'
+import { Alert } from 'reactstrap'
 
 export class BuyItemModal extends Component {
     constructor(props){
@@ -12,8 +13,10 @@ export class BuyItemModal extends Component {
         this.state={
             dropdownOpen:false,
             purchaseData:null,
+            orderData:null,
             qty:1, //initially
-            craft:this.props.props
+            craft:this.props.props,
+            visible:false,
         }
     }
 
@@ -31,12 +34,22 @@ export class BuyItemModal extends Component {
     }
 
     buyItemClick=()=>{
+        this.setState({
+            visible:true
+        })
         this.props.buyItemActions.buyItem(this.state)
+    }
+
+    onDismiss = () =>{
+        this.setState({
+            visible:false
+        })
+        this.props.onHide()
     }
 
     render() {
         console.log(this.props)
-        let {ciName,craftId,img,itemQuantity,ciPrice}=this.props.props
+        let {ciName,craftId,imgFile,itemQuantity,ciPrice}=this.props.props
         return (
             <div>
                 <Modal
@@ -57,7 +70,7 @@ export class BuyItemModal extends Component {
                             <Row>
                                 <Col md="2">
                                     <CardImg
-                                        src={img}
+                                        src={`data:image/png;base64,${imgFile}`}
                                     />
                                 </Col>
                                 <Col>
@@ -83,6 +96,9 @@ export class BuyItemModal extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                     <Button onClick={this.buyItemClick} className="btn btn-info ml-1 float-right">Buy</Button>
+                    <Alert color="warning" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        {this.props.orderData}
+                    </Alert>
                     </Modal.Footer>
                 </Modal>
             </div>

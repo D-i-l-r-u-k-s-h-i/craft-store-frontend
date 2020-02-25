@@ -6,6 +6,7 @@ import { withRouter} from 'react-router-dom'
 import PastOrdersCard from './past_orders_card';
 import { Card, CardText,CardImg,CardTitle,Row,Col} from 'reactstrap';
 import Rater from 'react-rater'
+import { Alert } from 'reactstrap'
 
 export class ViewPastOrdersComponent extends Component {
     constructor(props) {
@@ -18,7 +19,8 @@ export class ViewPastOrdersComponent extends Component {
             CreatorData:null,
             review:null,
             rating:0,
-            craftId:null
+            craftId:null,
+            visible:false,
         }
     }
 
@@ -69,6 +71,10 @@ export class ViewPastOrdersComponent extends Component {
             craftId:craftid,
             review:this.state.review
         }
+
+        this.setState({
+            visible:true
+        })
        
         this.props.addReviewActions.addReview(obj)
 
@@ -91,6 +97,12 @@ export class ViewPastOrdersComponent extends Component {
         this.props.addRatingActions.addRating(obj)
         
     }
+    onDismiss = () =>{
+        this.setState({
+            visible:false
+        })
+        
+    }
 
     render() {
         let {orderData,craftData,CreatorData}=this.state
@@ -110,7 +122,7 @@ export class ViewPastOrdersComponent extends Component {
                                     <Row>
                                         <Col md="2">
                                             <CardImg
-                                                src={property.img}
+                                                src={`data:image/png;base64,${property.imgFile}`}
                                             />
                                         </Col>
                                         <Col>
@@ -132,6 +144,9 @@ export class ViewPastOrdersComponent extends Component {
                                                     <button className="btn btn-primary">
                                                         Comment &#10148;
                                                 </button>
+                                                    <Alert color="warning" isOpen={this.state.visible} toggle={this.onDismiss}>
+                                                        {this.props.ReviewData}
+                                                    </Alert>
                                                 </div>
                                             </form>
                                         </Col>

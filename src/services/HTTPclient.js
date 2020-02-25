@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // const id_token="JWTSuperSecretKey";
 
-axios.defaults.headers.post["Content-Type"] = 'application/json'
+// axios.defaults.headers.post["Content-Type"] = 'application/json'
 axios.defaults.headers.get["Content-Type"] = 'application/json'
 
 var instance = null;
@@ -65,8 +65,13 @@ export const post=(route,data)=>{
     return instance.post(route,data == null ? { data: {} } :  data= JSON.stringify(data))
 }
 
+export const postCraft=(route,imgdata,responseType='blob')=>{
+    instance || setAuth()
+    return instance.post(route,imgdata,responseType)
+    // dtodata == null ? { dtodata: {} } : dtodata= JSON.stringify(dtodata),
+}
+
 export const get = (route, data) => {
-    console.log(data)
     instance || setAuth()
     return instance.get(route, data == null ? { data: {} } : { data: JSON.stringify(data) })
 }

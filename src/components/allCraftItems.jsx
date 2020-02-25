@@ -99,7 +99,7 @@ export class AllCraftItems extends Component {
         let items=craftData && craftData.map((item) =>{
             return <div key={item.craftId}>
                 <Card>
-                    <CardImg top width="100%" src={item.img} alt="Card image cap" />
+                    <CardImg top width="100%" src={`data:image/png;base64,${item.imgFile}`} alt="Card image cap" />
                     <CardBody>
                         <CardTitle className="font-weight-bold">{item.ciName}
                         {item.availabilityStatus?<div class="badge badge-primary text-wrap">Available</div>:<div class="badge badge-danger text-wrap">Not Available</div>}

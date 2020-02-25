@@ -4,12 +4,15 @@ import {
     Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button,Row,Col
   } from 'reactstrap';
-  import { getCreatorsCraftActions,getReviewActions} from '../actions'
+  import { getCreatorsCraftActions,getReviewActions, addToCartActions} from '../actions'
   import { connect } from 'react-redux'
   import { bindActionCreators } from 'redux'
   import { withRouter} from 'react-router-dom'
   import { Pagination} from 'react-bootstrap'
   import Rater from 'react-rater'
+  import BuyItemModal from './buy_item_modal';
+  import ConfirmDeleteModal from './confirmDeleteModal';
+import UpdateCraftComponent from './update_craft_component';
 
 export class CreatorsProfile extends Component {
     constructor(props){
@@ -19,7 +22,11 @@ export class CreatorsProfile extends Component {
             ReviewData:null,
             allCraftState: null,
             noOfPages:1,
-            active:1
+            active:1,
+            modalShow: false,
+            item:null,
+            editModalShow: false,
+            deleteModalShow: false,
         }
     }
 
@@ -65,6 +72,11 @@ export class CreatorsProfile extends Component {
     //     }
     }
 
+    onAddToCartClick=(item)=>{
+        var craftId=item.craftId
+        this.props.addToCartActions.addToCart(craftId)
+    }
+
     pageChanged=(e)=>{
         this.setState({active:parseInt(e.target.text)})
         console.log(e.target.text)
@@ -80,8 +92,9 @@ export class CreatorsProfile extends Component {
         const { craftData,ReviewData}=this.state
         console.log(ReviewData)
         // console.log(this.props.location.props.creator)
-        // console.log(this.props.history.location.props.creator.creatorId)
-        
+        let modalClose = () => this.setState({ modalShow: false });
+        let deleteModalClose = () => this.setState({ deleteModalShow: false });
+        let editModalClose = () => this.setState({ editModalShow: false });
 
         const breakpointColumnsObj = {
             default: 4,
@@ -99,17 +112,19 @@ export class CreatorsProfile extends Component {
             );
         }
 
-        var items=craftData && craftData.map(function (item) {
+        var items=craftData && craftData.map((item) =>{
             return <div key={item.craftId}>
                 <Card>
-                    <CardImg top width="100%" src={item.img} alt="Card image cap" />
+                    <CardImg top width="100%" src={`data:image/png;base64,${item.imgFile}`} alt="Card image cap" />
                     <CardBody>
                         <CardTitle className="font-weight-bold">{item.ciName}</CardTitle>
                         <CardSubtitle>{item.shortDescription}</CardSubtitle>
                         <CardText className="text-muted">{item.longDescription}</CardText>
                         <CardText className="font-weight-normal">Rs.{item.ciPrice}.00</CardText>
-                        <Button className="btn btn-info ml-1 float-right">Buy</Button>
-                        <Button className="btn btn-secondary float-right">Add to Cart</Button>
+                        {localStorage.getItem("roleId") == 1 ? <div><Button onClick={() => this.setState({ editModalShow: true ,item:item})} className="btn btn-info mr-1 float-left">Edit</Button>
+                        <Button onClick={() => this.setState({ deleteModalShow: true ,item:item})} className="btn btn-secondary float-left">Delete</Button><br/><br/></div>:null }
+                        {item.availabilityStatus?<div><Button onClick={() => this.setState({ modalShow: true ,item:item})} className="btn btn-info ml-1 float-right">Buy</Button></div>:null}
+                        <Button onClick={()=>this.onAddToCartClick(item)} className="btn btn-secondary float-right">Add to Cart</Button>
                     </CardBody>
                 </Card>
             </div>
@@ -138,6 +153,10 @@ export class CreatorsProfile extends Component {
                     {items}
                 </Masonry>
                 <Pagination onClick={this.pageChanged} >{nums}</Pagination>
+
+                <ConfirmDeleteModal show={this.state.deleteModalShow} onHide={deleteModalClose} props={this.state.item}/>
+                <UpdateCraftComponent show={this.state.editModalShow} onHide={editModalClose} props={this.state.item}/>
+
                 <hr/>
                 <h3>Reviews for Craft Items({ReviewData && ReviewData.length})</h3><br/>
                 {ReviewData && ReviewData.map(property => {
@@ -148,7 +167,7 @@ export class CreatorsProfile extends Component {
                                     <Row>
                                         <Col md="2">
                                             <CardImg
-                                                src={property.craftItem.img}
+                                                src={`data:image/png;base64,${property.craftItem.imgFile}`}
                                             />
                                         </Col>
                                         <Col>
@@ -163,6 +182,7 @@ export class CreatorsProfile extends Component {
                      ) 
                     })
                 } 
+                {this.state.item!=null?<BuyItemModal show={this.state.modalShow} onHide={modalClose} props={this.state.item}/>:null}
                 <hr/>
             </div>
         )
@@ -173,6 +193,7 @@ function mapDispatchToProps(dispatch) {
     return {
         getCreatorsCraftActions: bindActionCreators(getCreatorsCraftActions, dispatch),
         getReviewActions:bindActionCreators(getReviewActions, dispatch),
+        addToCartActions:bindActionCreators(addToCartActions, dispatch),
     }
 }
 
@@ -180,7 +201,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
     return {
         ...state.AllCraft,
-        ...state.Reviews
+        ...state.Reviews,
+        ...state.HandleOrders
     }
 }
 

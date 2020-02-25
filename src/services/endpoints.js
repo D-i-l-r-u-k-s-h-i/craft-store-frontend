@@ -26,3 +26,8 @@ export const CREATOR_FOR_RATINGS="/order/pastCraftCreators"
 export const ADD_REVIEW="/ratingsreviews/addreview"
 export const ADD_RATING="/ratingsreviews/addrating"
 export const GET_REVIEWS="/ratingsreviews/craftreview/"
+
+export const SHOW_NOTIFICATIONS="/notifications/getallofuser"
+
+export const ADD_ADMIN="/admin/register"
+export const SEARCH_CREATOR="/admin/search/"

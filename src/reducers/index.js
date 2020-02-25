@@ -9,6 +9,7 @@ import buyOrder from './buyOrder'
 import ratings from './ratings'
 import reviews from './reviews'
 import creatorForRating from './creatorForRating'
+import handleNotifications from './handleNotifications'
 
 const rootReducer=combineReducers({
     Login:login,
@@ -20,7 +21,8 @@ const rootReducer=combineReducers({
     BuyOrder:buyOrder,
     Ratings:ratings,
     Reviews:reviews,
-    CreatorForRating:creatorForRating
+    CreatorForRating:creatorForRating,
+    HandleNotifications:handleNotifications
 })
 
 export default rootReducer;

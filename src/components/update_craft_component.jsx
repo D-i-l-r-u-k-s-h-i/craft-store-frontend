@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
-import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import { updateCraftActions} from '../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -20,6 +20,7 @@ export class UpdateCraftComponent extends Component {
             type:null,
             category:"Other",
             availability:null,
+            selectedFile:null
             // craftData:null,
         }
     }
@@ -46,10 +47,20 @@ export class UpdateCraftComponent extends Component {
         this.setState({image:e.target.value,craftid:this.props.props.craftId})
     }
 
-    // fileChangedHandler = (event) => {
-    //     this.setState({ image: event.target.files[0] })
-    //     console.log(this.state.image)
-    // }
+    fileChangeHandler = (event) => {
+        console.log(event.target.files)
+        
+        this.setState({
+            selectedFile: event.target.files[0]
+        });
+
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0])
+        reader.onload = () => {
+            this.setState({image: reader.result});
+        };
+        
+    }
 
     handleChange=(e)=>{
         this.setState({category:e.target.value,craftid:this.props.props.craftId})
@@ -62,8 +73,23 @@ export class UpdateCraftComponent extends Component {
 
     handleUpdateBtnClick=(e)=>{
         e.preventDefault();
-        
-        this.props.updateCraftActions.updateCraft(this.state)
+        let {name,price,quantity,shortDesc,longDesc,type,category,selectedFile,availability,craftid,image} =this.state
+
+        const data = new FormData() 
+        selectedFile && data.append('imgFile', selectedFile,selectedFile.name)
+
+        data.append('craftId',craftid)
+        image && data.append('b64image',image)
+        name && data.append('ciName',name)
+        price && data.append('ciPrice',price)
+        quantity && data.append('itemQuantity', quantity)
+        shortDesc && data.append('shortDescription', shortDesc)
+        longDesc && data.append('longDescription', longDesc)
+        type && data.append('type', type)
+        category && data.append('category', category)
+        availability && data.append('availabilityStatus',availability)
+
+        this.props.updateCraftActions.updateCraft(data)
         this.props.onHide()
     }
 
@@ -87,17 +113,17 @@ export class UpdateCraftComponent extends Component {
                             <h2 className="text-center">Edit and Update Craft</h2><hr />
                             <FormGroup>
                                 <Label>Craft Name/Title</Label>
-                                <Input onChange={this.handleCraftName} type="text" placeholder={this.props.props&&this.props.props.ciName} />
+                                <Input onChange={this.handleCraftName} type="text" name="ciName" defaultValue={this.props.props&&this.props.props.ciName} placeholder={this.props.props&&this.props.props.ciName} />
                             </FormGroup>
                             <FormGroup check>
                                 <Label check>
-                                    <Input onChange={this.handleCheckBox} type="checkbox" />{' '}
+                                    <Input onChange={this.handleCheckBox} name="availabilityStatus" type="checkbox" />{' '}
                                     Is Available
                                 </Label>
                             </FormGroup>
                             <FormGroup>
                                 <Label for="exampleSelect">Select</Label>
-                                <Input value={this.state.category} onChange={this.handleChange} type="select" name="select" id="exampleSelect">
+                                <Input value={this.state.category} onChange={this.handleChange} type="select" name="category" id="exampleSelect">
                                     <option>Scrapbooking</option>
                                     <option>Sewing and quilting</option>
                                     <option>Kids craft</option>
@@ -114,46 +140,42 @@ export class UpdateCraftComponent extends Component {
                                 <legend>Type</legend>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input onClick={() => this.setState({ type: "READY_MADE" })} type="radio" name="radio1" />{' '}
+                                        <Input onClick={() => this.setState({ type: "READY_MADE" })} type="radio" name="type" />{' '}
                                         Ready Made
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input onClick={() => this.setState({ type: "CRAFT_KIT" })} type="radio" name="radio1" />{' '}
+                                        <Input onClick={() => this.setState({ type: "CRAFT_KIT" })} type="radio" name="type" />{' '}
                                         Craft Kit
                                     </Label>
                                 </FormGroup>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Price</Label>
-                                <Input onChange={this.handlePrice} type="text" placeholder={this.props.props&&this.props.props.ciPrice} />
+                                <Input onChange={this.handlePrice} defaultValue={this.props.props&& parseFloat(this.props.props.ciPrice)}/** */ type="number" name="ciPrice" placeholder={this.props.props&&this.props.props.ciPrice} />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Quantity</Label>
-                                <Input onChange={this.handlequantity} type="text" placeholder={this.props.props&&this.props.props.itemQuantity} />
+                                <Input onChange={this.handlequantity} type="number" defaultValue={this.props.props&& parseInt(this.props.props.itemQuantity)}/** */ name="itemQuantity" placeholder={this.props.props&&this.props.props.itemQuantity} />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Short description</Label>
-                                <Input onChange={this.handleShortDesc} type="text" placeholder={this.props.props&&this.props.props.shortDescription} />
+                                <Input onChange={this.handleShortDesc} type="text" name="shortDescription" defaultValue={this.props.props&&this.props.props.shortDescription} placeholder={this.props.props&&this.props.props.shortDescription} />
                             </FormGroup>
                             <FormGroup>
                                 <Label>Long description</Label>
-                                <Input onChange={this.handlelongDesc} type="textarea" placeholder={this.props.props&&this.props.props.longDescription} />
+                                <Input onChange={this.handlelongDesc} type="textarea" name="longDescription" defaultValue={this.props.props&&this.props.props.longDescription} placeholder={this.props.props&&this.props.props.longDescription} />
                             </FormGroup>
-                            {/* for now to add img urls */}
+    
                             <FormGroup>
-                                <Label>Image URL</Label>
-                                <Input onChange={this.handleUrl} type="text" placeholder={this.props.props&&this.props.props.img} />
-                            </FormGroup>
-
-                            {/* <FormGroup>
                                 <Label for="exampleFile">File</Label>
-                                <Input type="file" name="file" onChange={this.fileChangedHandler} id="exampleFile" />
+                                {/* accept="image/*" */}
+                                <Input type="file" name="imgFile" onChange={this.fileChangeHandler} /** id="exampleFile"*/ />
                                 <FormText color="muted">
                                     Add image of your craft here
                                     </FormText>
-                            </FormGroup> */}
+                            </FormGroup>
                             <Button onClick={this.handleUpdateBtnClick} className="btn-lg btn-dark btn-block" type="submit">Update</Button>
                         </Form>
                     </Modal.Body>

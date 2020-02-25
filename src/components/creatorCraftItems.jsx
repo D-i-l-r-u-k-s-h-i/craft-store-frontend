@@ -93,10 +93,11 @@ export class CreatorCraftItems extends Component {
         };
 
         
+        
         let items = Array.isArray(craftData) &&craftData && craftData.map((item)=> {
             return <div key={item.craftId}>
                 <Card>
-                    <CardImg top width="100%" src={item.img} alt="Card image cap" />
+                    <CardImg top width="100%" src={`data:image/png;base64,${item.imgFile}`} alt="Card image cap" />
                     <CardBody>
                         <CardTitle className="font-weight-bold">{item.ciName}</CardTitle>
                         <CardSubtitle>{item.shortDescription}</CardSubtitle>
@@ -147,7 +148,7 @@ export class CreatorCraftItems extends Component {
                                     <Row>
                                     <Col md="2">
                                             <CardImg
-                                                src={property.craftItem.img}
+                                                src={`data:image/png;base64,${property.craftItem.imgFile}`}
                                             />
                                         </Col>
                                         <Col>
