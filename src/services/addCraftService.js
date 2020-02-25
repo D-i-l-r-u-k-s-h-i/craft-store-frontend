@@ -18,21 +18,6 @@ const addcraft=createLogic({
         // debugger
         console.log("payload check",action.payload)
 
-        let obj={
-            ciName : action.payload.name,
-            ciPrice:action.payload.price,
-            // img:action.payload.image,
-            // imgFile:action.payload.image,
-            itemQuantity:action.payload.quantity,
-            shortDescription:action.payload.shortDesc,
-            longDescription:action.payload.longDesc,
-            category:action.payload.category,
-            type:action.payload.type
-        }
-
-        console.log(obj)
-
-        //${endPoints.ADD_CRAFT}?=${action.payload.image}`
         HTTPclient.postCraft(endPoints.ADD_CRAFT,action.payload)
             .then(resp=> {
                 // debugger
@@ -61,19 +46,6 @@ const updatecraft=createLogic({
 
         // debugger
         console.log("payload check",action.payload)
-
-        let obj={
-            craftId:action.payload.craftid,
-            ciName : action.payload.name,
-            ciPrice:action.payload.price,
-            img:action.payload.image,
-            itemQuantity:action.payload.quantity,
-            shortDescription:action.payload.shortDesc,
-            longDescription:action.payload.longDesc,
-            category:action.payload.category,
-            type:action.payload.type,
-            availabilityStatus:action.payload.availability
-        }
 
         HTTPclient.postCraft(endPoints.UPDATE_CRAFT,action.payload)
             .then(resp=> {
