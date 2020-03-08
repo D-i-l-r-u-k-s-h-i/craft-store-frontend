@@ -58,7 +58,7 @@ export class OrdersCreatorModal extends Component {
                         <Modal.Title>Due Orders</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {orderData && orderData.map(property=>{
+                        {Array.isArray(orderData) && orderData && orderData.map(property=>{
                             return (
                                 <Alert color="info" role="alert" >
                                     <div>Date of purchase: {property.purchaseDate}</div>

@@ -4,7 +4,11 @@ import AddAdminModal from './add_admin_modal';
 import Select from 'react-select';
 import * as api from '../services/HTTPclient'
 import * as endPoints from '../services/endpoints'
-// import {Link} from 'react-router-dom'
+import { getNewUserActions} from '../actions'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { withRouter} from 'react-router-dom'
+import { Table } from 'reactstrap';
 
 export class AdminDashBoardComponent extends Component {
     constructor(props){
@@ -13,7 +17,8 @@ export class AdminDashBoardComponent extends Component {
             creatorData:null,
             modalShow: false,
             creatorsList:[],
-            searchQuery:null
+            searchQuery:null,
+            userData:null
         }
     }
 
@@ -37,6 +42,33 @@ export class AdminDashBoardComponent extends Component {
         }).catch(err => {
     
         });
+    }
+
+    componentDidMount(){
+        this.props.getNewUserActions.getNewUsers(this.state)
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        console.log(nextProps)
+        let newProps={}
+        if (nextProps.userData && nextProps.userData !== prevState.userData) {
+            newProps.userData = nextProps.userData
+        }
+        // if (nextProps.location.hash && (nextProps.location.hash !== prevState.hash)) {
+        //     return {
+        //         hash: nextProps.location.hash
+        //     }
+        // }
+        if(newProps.userData){
+            return{
+               loaded: true,
+               userData:newProps.userData,
+            }
+        }
+        // console.log(newProps)
+        return {
+            ...newProps
+        };
     }
     
     handleInputChange=(e)=>{
@@ -64,6 +96,7 @@ export class AdminDashBoardComponent extends Component {
 
     render() {
         console.log(this.state)
+        let {userData}=this.state
         let modalClose = () => this.setState({ modalShow: false });
 
         return (
@@ -72,7 +105,7 @@ export class AdminDashBoardComponent extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3"></div>
-                            <div className="col-md-6">
+                            <div className="col-md-6">Search Creators
                                 <Select options={Array.isArray(this.state.creatorsList) && this.state.creatorsList && this.state.creatorsList}
                                     closeMenuOnSelect={false}
                                     onInputChange={this.handleInputChange}
@@ -94,6 +127,28 @@ export class AdminDashBoardComponent extends Component {
                 
                 <br/><br/>
                 <button type="button" className="btn btn-danger btn-xl" onClick={() => this.setState({ modalShow: true })}>&#43; New Admin</button>
+                <hr/>
+                <h3>Recently Registered Users</h3><br/>
+                    <Table dark>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {userData && userData.map(property=>{
+                                return(
+                                    <tr>
+                                        <td>{property.index}</td>
+                                        <td>{property.userName}</td>
+                                        <td>{property.userType}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
                 </Container>
                 <AddAdminModal show={this.state.modalShow} onHide={modalClose} />
             </div>
@@ -101,4 +156,17 @@ export class AdminDashBoardComponent extends Component {
     }
 }
 
-export default AdminDashBoardComponent
+function mapDispatchToProps(dispatch) {
+    return {
+        getNewUserActions: bindActionCreators(getNewUserActions, dispatch),
+    }
+}
+
+
+function mapStateToProps(state) {
+    return {
+        ...state.NewUsers,
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminDashBoardComponent))

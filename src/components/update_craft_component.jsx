@@ -17,8 +17,8 @@ export class UpdateCraftComponent extends Component {
             quantity:null,
             shortDesc:null,
             longDesc:null,
-            type:null,
-            category:"Other",
+            type:this.props.props && this.props.props.type,
+            category:this.props.props && this.props.props.category,
             availability:null,
             selectedFile:null
             // craftData:null,

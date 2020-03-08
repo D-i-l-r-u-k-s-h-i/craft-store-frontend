@@ -5,6 +5,7 @@ import addCraftService from './addCraftService'
 import handleOrdersService from './HandleOrdersService'
 import ratingsAndReviewsService from './RatingsAndReviewsService'
 import notificationsService from './notificationsService'
+import getUsersService from './getUsersService'
 
 export default [
     ...loginService,
@@ -13,5 +14,6 @@ export default [
     ...addCraftService,
     ...handleOrdersService,
     ...ratingsAndReviewsService,
-    ...notificationsService
+    ...notificationsService,
+    ...getUsersService
 ]

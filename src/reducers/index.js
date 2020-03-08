@@ -10,6 +10,7 @@ import ratings from './ratings'
 import reviews from './reviews'
 import creatorForRating from './creatorForRating'
 import handleNotifications from './handleNotifications'
+import newUsers from './getUsers'
 
 const rootReducer=combineReducers({
     Login:login,
@@ -22,7 +23,8 @@ const rootReducer=combineReducers({
     Ratings:ratings,
     Reviews:reviews,
     CreatorForRating:creatorForRating,
-    HandleNotifications:handleNotifications
+    HandleNotifications:handleNotifications,
+    NewUsers:newUsers
 })
 
 export default rootReducer;

@@ -50,7 +50,7 @@ export class NotificationsModal extends Component {
             <div>
                 <Modal {...this.props} animation={false}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Due Orders</Modal.Title>
+                        <Modal.Title>Notifications</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {notificationData && notificationData.map(property=>{

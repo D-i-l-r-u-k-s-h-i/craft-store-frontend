@@ -25,6 +25,7 @@ import * as AddReview from './addReview'
 import * as GetReviews from './reviews'
 import * as GetNotifications from './getNotifications'
 import * as AddAdmin from './addAdmin'
+import * as GetNewUsers from './getNewUsers'
 
 
 export{
@@ -69,6 +70,10 @@ export{
 
 export{
     GetCreatorsCraft as getCreatorsCraftTypes
+}
+
+export{
+    GetNewUsers as getNewUserTypes
 }
 
 export{
@@ -153,6 +158,8 @@ export const getCreatorsOrdersActions=GetCreatorsOrders.default
 export const getPastOrderActions=GetPastOrders.default
 
 export const getNotificationsActions=GetNotifications.default
+
+export const getNewUserActions=GetNewUsers.default
 
 export const getRecentCraftActions=GetRecentCraft.default
 

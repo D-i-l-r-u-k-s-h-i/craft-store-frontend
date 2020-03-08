@@ -31,3 +31,4 @@ export const SHOW_NOTIFICATIONS="/notifications/getallofuser"
 
 export const ADD_ADMIN="/admin/register"
 export const SEARCH_CREATOR="/admin/search/"
+export const NEW_USERS="/admin/newusers"
