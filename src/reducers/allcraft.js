@@ -153,12 +153,13 @@ export default handleActions({
         }
     }),
     [deleteCraftTypes.SUCCESS_DELETE_CRAFT]:(state,{payload})=>{
+        console.log(payload)
         console.log(state)
         if (state.craftData && Array.isArray(state.craftData) && state.craftData.length !== 0) {
             state.craftData && state.craftData.map((removeId, index) => {
                 console.log(removeId.craftId)
                 console.log(state.removeItem.craftData)
-                if (removeId.craftId == state.removeItem.craftData) {
+                if (removeId.craftId == state.removeItem.craftData && payload.status=='DELETE') {
                     return state.craftData.splice(index, 1);
                 }
             })

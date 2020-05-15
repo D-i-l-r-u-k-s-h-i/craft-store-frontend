@@ -47,21 +47,23 @@ function NavBarComponent() {
                     </LinkContainer>
                 </NavDropdown>
                 {localStorage.getItem("roleId") == 1 ? <Nav.Link href='/admin' >Dashboard</Nav.Link>
-                : localStorage.getItem("roleId") == 3 ? <Nav.Link href='/creator' >Dashboard</Nav.Link>:null}
+                : localStorage.getItem("roleId") == 3 ? <Nav.Link href='/creator' >Dashboard</Nav.Link>:<Nav className="mr-auto">
+                <Nav.Link href="#" className='text-dark'>''''''''''</Nav.Link>
+            </Nav>}
             </Nav>
         )
     }
 
     return (
         <div>
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" variant="dark" fixed='top'>
                 <Navbar.Brand href="/home">C&#8476;&#8491;ft Store &#9752;</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link href="/home">Home</Nav.Link>
                 </Nav>
                 {localStorage.getItem("jwt")?content():loginBtn()}
             </Navbar>
-            <br />
+            <br /><br /><br />
         </div>
     )
 }

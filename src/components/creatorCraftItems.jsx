@@ -11,6 +11,8 @@ import {
 import ConfirmDeleteModal from './confirmDeleteModal';
 import UpdateCraftComponent from './update_craft_component';
 import { Pagination} from 'react-bootstrap'
+import {Spinner} from 'react-bootstrap'
+
 
 export class CreatorCraftItems extends Component {
     constructor(props){
@@ -124,7 +126,8 @@ export class CreatorCraftItems extends Component {
 
         return (
             <div>
-                 <Masonry
+                {craftData==null?<div className="text-center"><br/><Spinner animation="border" variant="info"/></div>:null}
+                <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column">

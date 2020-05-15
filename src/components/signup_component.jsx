@@ -52,7 +52,7 @@ export class SignupComponent extends Component {
 
     render() {
         return (
-            <div className='app-container'>
+            <div className='background_container'>
                 <div className='app-card app-card-content'>
                     <div className='app-card-content-inner'>
                         <div className="app-form-item">

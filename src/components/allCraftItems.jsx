@@ -15,6 +15,7 @@ import {
     InputGroupAddon,Row,ButtonGroup
   } from 'reactstrap';
 import BuyItemModal from './buy_item_modal';
+import {Spinner} from 'react-bootstrap'
 
 export class AllCraftItems extends Component {
 
@@ -117,8 +118,9 @@ export class AllCraftItems extends Component {
                         <CardSubtitle>{item.shortDescription}</CardSubtitle>
                         <CardText className="text-muted">{item.longDescription}</CardText>
                         <CardText className="font-weight-normal">Rs.{item.ciPrice}.00</CardText>
-                        {item.availabilityStatus?<div><Button onClick={() => this.setState({ modalShow: true ,item:item})} className="btn btn-info ml-1 float-right">Buy</Button>
-                        <Button onClick={()=>this.onAddToCartClick(item)} className="btn btn-secondary float-right">Add to Cart</Button></div>:null}
+                        {!item.availabilityStatus || localStorage.getItem("user")==item.creator.creatorName?<div><Button className="btn btn-info ml-1 float-right" disabled>Buy</Button>
+                        <Button className="btn btn-secondary float-right" disabled>Add to Cart</Button></div>:<div><Button onClick={() => this.setState({ modalShow: true ,item:item})} className="btn btn-info ml-1 float-right">Buy</Button>
+                        <Button onClick={()=>this.onAddToCartClick(item)} className="btn btn-secondary float-right">Add to Cart</Button></div>}
                     </CardBody>
                 </Card>
                 
@@ -157,6 +159,7 @@ export class AllCraftItems extends Component {
                     <Button onClick={this.handleAll}><h1>🧚‍♀️</h1>All</Button>
                 </ButtonGroup>
                 <br/><br/>
+                {craftData==null?<div className="text-center"><br/><Spinner animation="border" variant="info"/></div>:null}
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid"

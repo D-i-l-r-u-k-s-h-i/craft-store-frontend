@@ -7,8 +7,10 @@ export class ViewAllOrdersPage extends Component {
     render() {
         return (
             <div>
+                <div className='page-wrap'>
                 <NavBarComponent/>
                 <ViewPastOrdersComponent/>
+                </div>
                 <Footer/>
             </div>
         )

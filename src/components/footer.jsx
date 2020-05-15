@@ -2,8 +2,8 @@ import React from 'react'
 
 function Footer() {
     return (
-        <div>
-            <div className="footer">
+        // <div>
+            <footer className="site-footer">
                 <strong>C&#8476;&#8491;ft Store &#9752;&#8482;</strong><br/>
                 <table>
                     <tr>
@@ -20,8 +20,8 @@ function Footer() {
                     </tr>
                 </table>
                 &#169;craftstore.lk Coperation
-            </div>
-        </div>
+            </footer>
+        // </div>
     )
 }
 

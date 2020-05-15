@@ -13,12 +13,14 @@ import {
   import BuyItemModal from './buy_item_modal';
   import ConfirmDeleteModal from './confirmDeleteModal';
 import UpdateCraftComponent from './update_craft_component';
+import {Spinner} from 'react-bootstrap'
 
 export class CreatorsProfile extends Component {
     constructor(props){
         super(props);
         this.state={
             craftData:null,
+            deletedCraftData:null,
             ReviewData:null,
             allCraftState: null,
             noOfPages:1,
@@ -144,7 +146,7 @@ export class CreatorsProfile extends Component {
                 
                 
                 <hr/>
-                
+                {craftData==null?<div className="text-center"><br/><Spinner animation="border" variant="info"/></div>:null}
                  <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid"

@@ -56,6 +56,7 @@
 .app-card-content .app-card-content-inner,
 .app-card-content .app-card-content-inner {
   padding: 40px;
+  background-color: #FFFFFF;
 }
 body{
   overflow-x: hidden;
@@ -96,7 +97,25 @@ section {
   }
 }
 
-.footer {
+.background_container{
+  background: url(https://s3.amazonaws.com/user-media.venngage.com/454059-6997d539146ac30ad6c394a15648b015.jpg) no-repeat;
+  min-height: 100vh; 
+  background-position: center;
+  background-size: cover;
+}
+
+.page-wrap {
+  min-height: calc(100vh - 300px);
+}
+
+.site-footer {
+  height: 300px;
+  background-color: #3b4d64;
+  text-align: center;
+  color: white;
+}
+
+/* .footer {
   position: relative;
   right: 0;
   bottom: 0;
@@ -105,7 +124,7 @@ section {
   background-color: #3b4d64;
   text-align: center;
   color: white;
-}
+} */
 
 .bodycontainer{
   padding-left: 10%;

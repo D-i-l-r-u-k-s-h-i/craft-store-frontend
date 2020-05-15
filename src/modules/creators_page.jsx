@@ -7,8 +7,10 @@ export class CreatorsPage extends Component {
     render() {
         return (
             <div>
+                <div className='page-wrap'>
                 <NavBarComponent/>
                 <CreatorDashboardComponent/>
+                </div>
                 <Footer/>
             </div>
         )

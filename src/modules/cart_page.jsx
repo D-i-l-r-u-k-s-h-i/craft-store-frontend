@@ -7,8 +7,10 @@ export class CartPage extends Component {
     render() {
         return (
             <div>
+                <div className='page-wrap'>
                 <NavBarComponent/>
                 <ViewCartComponent/>
+                </div>
                 <Footer/>
             </div>
         )
