@@ -12,7 +12,8 @@ export class CartItemCard extends Component {
         this.state={
             dropdownOpen:false,
             quantityData:null,
-            qty:this.props.props.quantity
+            qty:this.props.props.quantity,
+            orderData:null
         }
     }
 
@@ -37,8 +38,10 @@ export class CartItemCard extends Component {
         this.props.changeQuantityActions.changeQuantity(obj)
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.quantityData!==prevProps.quantityData){
+    componentDidUpdate(prevProps,prevState){
+        console.log(prevState)
+        console.log(this.props)
+        if(this.props.quantityData!==prevProps.quantityData || this.props.orderData!==prevState.orderData){
             this.props.refresh()
         }
     }

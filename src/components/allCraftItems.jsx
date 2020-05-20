@@ -16,6 +16,7 @@ import {
   } from 'reactstrap';
 import BuyItemModal from './buy_item_modal';
 import {Spinner} from 'react-bootstrap'
+import history from '../history'
 
 export class AllCraftItems extends Component {
 
@@ -79,8 +80,14 @@ export class AllCraftItems extends Component {
     }
     
     onAddToCartClick=(item)=>{
-        var craftId=item.craftId
-        this.props.addToCartActions.addToCart(craftId)
+        if(localStorage.getItem("jwt")){
+            var craftId=item.craftId
+            this.props.addToCartActions.addToCart(craftId)
+        } 
+        else{
+            history.push('/login')
+        }
+        
     }
 
     render() {
@@ -104,7 +111,7 @@ export class AllCraftItems extends Component {
                     <CardBody>
                         <CardTitle className="font-weight-bold">{item.ciName}
                         {item.availabilityStatus?<div class="badge badge-primary text-wrap">Available</div>:<div class="badge badge-danger text-wrap">Not Available</div>}
-                        {localStorage.getItem("user")==item.creator.creatorName?<button type="button" class="btn btn-sm btn-warning ml-1" disabled>{item.creator.creatorName}</button>:<Link to={{
+                        {localStorage.getItem("user")==item.creator.creatorName || !localStorage.getItem("jwt")?<button type="button" class="btn btn-sm btn-warning ml-1" disabled>{item.creator.creatorName}</button>:<Link to={{
                         pathname: '/creatorprofile',
                         props: {
                             creator: item.creator

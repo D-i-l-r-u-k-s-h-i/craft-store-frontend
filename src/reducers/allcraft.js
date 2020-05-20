@@ -170,7 +170,8 @@ export default handleActions({
                 ...state.removeItem,
                 loading: false,
                 removeItem: true,
-                removeItemError: undefined
+                removeItemError: undefined,
+                message:payload.message
             }
         }
     },

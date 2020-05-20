@@ -14,13 +14,13 @@ import {
   import ConfirmDeleteModal from './confirmDeleteModal';
 import UpdateCraftComponent from './update_craft_component';
 import {Spinner} from 'react-bootstrap'
+import { Alert } from 'reactstrap';
 
 export class CreatorsProfile extends Component {
     constructor(props){
         super(props);
         this.state={
             craftData:null,
-            deletedCraftData:null,
             ReviewData:null,
             allCraftState: null,
             noOfPages:1,
@@ -29,6 +29,7 @@ export class CreatorsProfile extends Component {
             item:null,
             editModalShow: false,
             deleteModalShow: false,
+            visible:false,
         }
     }
 
@@ -69,9 +70,7 @@ export class CreatorsProfile extends Component {
         this.props.getCreatorsCraftActions.getCreatorsCraft(obj)
         
         this.props.getReviewActions.getReview(this.props.location.props.creator.creatorId)
-    //    window.onbeforeunload = function () {
-    //         return false;
-    //     }
+
     }
 
     onAddToCartClick=(item)=>{
@@ -90,12 +89,20 @@ export class CreatorsProfile extends Component {
         this.props.getCreatorsCraftActions.getCreatorsCraft(obj)
    }
 
+   onDismiss = () =>{
+    this.setState({
+        visible:false
+        })
+    }
+
     render() {
         const { craftData,ReviewData}=this.state
-        console.log(ReviewData)
-        // console.log(this.props.location.props.creator)
+        // console.log(ReviewData)
+        // console.log(this.props)
+        // console.log(this.state)
+        
         let modalClose = () => this.setState({ modalShow: false });
-        let deleteModalClose = () => this.setState({ deleteModalShow: false });
+        let deleteModalClose = () => this.setState({ deleteModalShow: false,visible:true });
         let editModalClose = () => this.setState({ editModalShow: false });
 
         const breakpointColumnsObj = {
@@ -154,6 +161,9 @@ export class CreatorsProfile extends Component {
                     {/* array of JSX items */}
                     {items}
                 </Masonry>
+                <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        {this.props.removeItem && this.props.removeItem.message}
+                    </Alert>
                 <Pagination onClick={this.pageChanged} >{nums}</Pagination>
 
                 <ConfirmDeleteModal show={this.state.deleteModalShow} onHide={deleteModalClose} props={this.state.item}/>

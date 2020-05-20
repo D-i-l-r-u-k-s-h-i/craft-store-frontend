@@ -17,10 +17,10 @@ function App() {
   return (
     <Router history={history}>
     <Switch>
-      <Route index={1} exact path={'/'} component={Loginpage}/>
+      <Route index={1} exact path={'/login'} component={Loginpage}/>
       <Route index={1} exact ={true} path={'/signup'} component={SignupPage}/>
       <Route index={1} exact={true} path={'/creator'} component={CreatorsPage}/>
-      <Route index={1} exact={true} path={'/home'} component={HomePage}/>
+      <Route index={1} exact={true} path={'/'} component={HomePage}/>
       <Route index={1} exact={true} path={'/admin'} component={AdminsPage}/>
       <Route index={1} exact={true} path={'/cart'} component={CartPage}/>
       <Route index={1} exact={true} path={'/creatorprofile'} component={CreatorProfilePage}/>

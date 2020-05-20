@@ -47,7 +47,7 @@ const login=createLogic({
                     history.push('/admin');
                 }
                 else if(roleId===2){
-                    history.push('/home');
+                    history.push('/');
                 }
                 else if(roleId===3){
                     history.push('/creator');

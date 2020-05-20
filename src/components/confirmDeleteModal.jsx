@@ -20,7 +20,7 @@ export class ConfirmDeleteModal extends Component {
     }
 
     render() {
-        console.log(this.props.props)
+        console.log(this.props)
         return (
             <div>
                 <Modal {...this.props} animation={false}>

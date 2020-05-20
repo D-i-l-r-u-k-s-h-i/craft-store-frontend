@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter} from 'react-router-dom'
 import { loginActions } from '../actions'
+import { Alert } from 'reactstrap'
 
 export class LoginComponent extends Component {
     constructor(props){
@@ -12,7 +13,8 @@ export class LoginComponent extends Component {
         this.state={
             uname:null,
             pass:null,
-            loginState:null
+            loginState:null,
+            visible:false,
         }
     }
 
@@ -20,7 +22,7 @@ export class LoginComponent extends Component {
         console.log(nextProps)
         if(prevState.loginState===null){
             return{
-                loginState: nextProps.LoginData
+                loginState: nextProps.loginData
             }
         }else return null
     }
@@ -40,6 +42,22 @@ export class LoginComponent extends Component {
         
     }
 
+    componentDidUpdate(prevProps){
+        console.log(prevProps)
+        console.log(this.props)
+        if(this.state.loginState && prevProps.loginData==this.state.loginState && this.state.loginState.accessToken==undefined){
+            this.setState({
+                visible:true
+            })
+        }
+    }
+
+    onDismiss = () =>{
+        this.setState({
+            visible:false
+        })
+    }
+
     render() {
         return (
             <div>
@@ -54,6 +72,9 @@ export class LoginComponent extends Component {
                         <Label>Password</Label>
                         <Input onChange={this.handlePassword} type="password" placeholder="Password"/>
                     </FormGroup>
+                    <Alert color="warning" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        {this.state.loginState}
+                    </Alert>
                     <Button className="btn-lg btn-dark btn-block" onClick={this.handleloginBtnClick} type="submit">Log in</Button>
                     <div className="text-center pt-3">Or continue with Google</div>
                     {/* <div>{this.props.msg}</div> */}
@@ -77,7 +98,7 @@ function mapDispatchToProps (dispatch){
 
 function mapStateToProps (state){
     return{
-        ...state.login,
+        ...state.Login,
     }
 }
 

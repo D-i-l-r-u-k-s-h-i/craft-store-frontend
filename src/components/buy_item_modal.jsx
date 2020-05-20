@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter} from 'react-router-dom'
 import { Alert } from 'reactstrap'
+import history from '../history'
 
 export class BuyItemModal extends Component {
     constructor(props){
@@ -34,10 +35,16 @@ export class BuyItemModal extends Component {
     }
 
     buyItemClick=()=>{
-        this.setState({
-            visible:true
-        })
-        this.props.buyItemActions.buyItem(this.state)
+        if(localStorage.getItem("jwt")){
+            this.setState({
+                visible:true
+            })
+            this.props.buyItemActions.buyItem(this.state)
+        }
+        else{
+            history.push('/login')
+        }
+        
     }
 
     onDismiss = () =>{

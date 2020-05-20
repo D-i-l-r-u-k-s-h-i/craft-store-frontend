@@ -1,4 +1,4 @@
-import {Button, Form, FormGroup, Label, Input,FormText} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input,FormText,FormFeedback} from 'reactstrap';
 import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -21,10 +21,23 @@ export class AddCraftComponent extends Component {
             category:"Other",
             // craftData:null,
             addCraftState:null,
-            selectedFile:null
+            selectedFile:null,
+            validate:{
+                priceState:'',
+                quantityState:''
+            },
+            required_inputs:false
         }
     }
     
+    checkRequiredInputs=()=>{
+        const {name,price, quantity,shortDesc, longDesc, image,selectedFile, validate}=this.state
+
+        if(name!=null && price!=null && quantity!=null && selectedFile !=null && shortDesc!=null && longDesc!=null && validate.priceState!='has-danger' && validate.quantityState!='has-danger'){
+            this.setState({required_inputs:true})
+            return true
+        }
+    }
 
     static getDerivedStateFromProps(nextProps,prevState){
         console.log(nextProps)
@@ -38,20 +51,43 @@ export class AddCraftComponent extends Component {
     
     handleCraftName=(e)=>{
         this.setState({name:e.target.value})
+        this.checkRequiredInputs()
     }
     handlePrice=(e)=>{
+        const priceRex =  /^[0-9]+$/;
+        const { validate } = this.state
+          if (priceRex.test(e.target.value)) {
+            validate.priceState = 'has-success'
+          } else {
+            validate.priceState = 'has-danger'
+          }
+        this.setState({ validate })
+
         this.setState({price:e.target.value})
+        this.checkRequiredInputs()
     }
     
     handlequantity=(e)=>{
+        const priceRex =  /^[0-9]+$/;
+        const { validate } = this.state
+          if (priceRex.test(e.target.value)) {
+            validate.quantityState = 'has-success'
+          } else {
+            validate.quantityState = 'has-danger'
+          }
+        this.setState({ validate })
+
         this.setState({quantity:e.target.value})
+        this.checkRequiredInputs()
     }
     handleShortDesc=(e)=>{
         this.setState({shortDesc:e.target.value})
+        this.checkRequiredInputs()
     }
 
     handlelongDesc=(e)=>{
         this.setState({longDesc:e.target.value})
+        this.checkRequiredInputs()
     }
 
     fileChangeHandler = (event) => {
@@ -66,10 +102,12 @@ export class AddCraftComponent extends Component {
         reader.onload = () => {
             this.setState({image: reader.result});
         };
+        this.checkRequiredInputs()
     }
 
     handleChange=(e)=>{
         this.setState({category:e.target.value})
+        this.checkRequiredInputs()
     }
 
     handleAddBtnClick=(e)=>{
@@ -148,11 +186,19 @@ export class AddCraftComponent extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label>Price</Label>
-                                <Input onChange={this.handlePrice} type="number" name="ciPrice" placeholder="Price per item" />
+                                <Input onChange={this.handlePrice} type="number" name="ciPrice" placeholder="Price per item" 
+                                valid={this.state.validate.priceState === 'has-success'} invalid={this.state.validate.priceState === 'has-danger'}/>
+                                <FormFeedback invalid>
+                                    The price should be only numerical
+                            </FormFeedback>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Quantity</Label>
-                                <Input onChange={this.handlequantity} type="number" name="itemQuantity" placeholder="No. of items" />
+                                <Input onChange={this.handlequantity} type="number" name="itemQuantity" placeholder="No. of items" 
+                                valid={this.state.validate.quantityState === 'has-success'} invalid={this.state.validate.quantityState === 'has-danger'}/>
+                                <FormFeedback invalid>
+                                    The quantity should be only in numerical form
+                            </FormFeedback>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Short description</Label>
@@ -169,7 +215,7 @@ export class AddCraftComponent extends Component {
                                     Add image of your craft here
                                     </FormText>
                             </FormGroup>
-                            <Button onClick={this.handleAddBtnClick} className="btn-lg btn-dark btn-block" type="submit">Add</Button>
+                            {this.state.required_inputs ?<Button onClick={this.handleAddBtnClick} className="btn-lg btn-dark btn-block" type="submit">Add</Button>:<Button onClick={this.handleAddBtnClick} className="btn-lg btn-dark btn-block" type="submit" disabled>Add</Button>}
                         </Form>
                     </Modal.Body>
                 </Modal>

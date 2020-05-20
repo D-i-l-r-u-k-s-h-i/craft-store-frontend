@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
-import {Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
+import {Button, Form, FormGroup, Label, Input, FormText,FormFeedback} from 'reactstrap';
 import { updateCraftActions} from '../actions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -20,8 +20,12 @@ export class UpdateCraftComponent extends Component {
             type:this.props.props && this.props.props.type,
             category:this.props.props && this.props.props.category,
             availability:null,
-            selectedFile:null
-            // craftData:null,
+            selectedFile:null,
+            validate:{
+                priceState:'',
+                quantityState:''
+            },
+            required_inputs:false
         }
     }
 
@@ -29,10 +33,26 @@ export class UpdateCraftComponent extends Component {
         this.setState({name:e.target.value,craftid:this.props.props.craftId})
     }
     handlePrice=(e)=>{
+        const priceRex =  /^[0-9]+$/;
+        const { validate } = this.state
+          if (priceRex.test(e.target.value)) {
+            validate.priceState = 'has-success'
+          } else {
+            validate.priceState = 'has-danger'
+          }
+        this.setState({ validate })
         this.setState({price:e.target.value,craftid:this.props.props.craftId})
     }
     
     handlequantity=(e)=>{
+        const priceRex =  /^[0-9]+$/;
+        const { validate } = this.state
+          if (priceRex.test(e.target.value)) {
+            validate.quantityState = 'has-success'
+          } else {
+            validate.quantityState = 'has-danger'
+          }
+        this.setState({ validate })
         this.setState({quantity:e.target.value,craftid:this.props.props.craftId})
     }
     handleShortDesc=(e)=>{
@@ -153,11 +173,19 @@ export class UpdateCraftComponent extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label>Price</Label>
-                                <Input onChange={this.handlePrice} defaultValue={this.props.props&& parseFloat(this.props.props.ciPrice)}/** */ type="number" name="ciPrice" placeholder={this.props.props&&this.props.props.ciPrice} />
+                                <Input onChange={this.handlePrice} defaultValue={this.props.props&& parseFloat(this.props.props.ciPrice)} type="number" name="ciPrice" placeholder={this.props.props&&this.props.props.ciPrice}
+                                valid={this.state.validate.priceState === 'has-success'} invalid={this.state.validate.priceState === 'has-danger'} />
+                            <FormFeedback invalid>
+                                    The price should be only numerical
+                            </FormFeedback>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Quantity</Label>
-                                <Input onChange={this.handlequantity} type="number" defaultValue={this.props.props&& parseInt(this.props.props.itemQuantity)}/** */ name="itemQuantity" placeholder={this.props.props&&this.props.props.itemQuantity} />
+                                <Input onChange={this.handlequantity} type="number" defaultValue={this.props.props&& parseInt(this.props.props.itemQuantity)}/** */ name="itemQuantity" placeholder={this.props.props&&this.props.props.itemQuantity} 
+                                valid={this.state.validate.quantityState === 'has-success'} invalid={this.state.validate.quantityState === 'has-danger'}/>
+                            <FormFeedback invalid>
+                                    The quantity should be only in numerical form
+                            </FormFeedback>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Short description</Label>

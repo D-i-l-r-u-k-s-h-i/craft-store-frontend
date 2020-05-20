@@ -12,7 +12,7 @@ import ConfirmDeleteModal from './confirmDeleteModal';
 import UpdateCraftComponent from './update_craft_component';
 import { Pagination} from 'react-bootstrap'
 import {Spinner} from 'react-bootstrap'
-
+import { Alert } from 'reactstrap';
 
 export class CreatorCraftItems extends Component {
     constructor(props){
@@ -26,7 +26,8 @@ export class CreatorCraftItems extends Component {
             editModalShow: false,
             modalShow: false,
             item:null,
-            active:1
+            active:1,
+            visible:false,
         }
     }
 
@@ -59,6 +60,12 @@ export class CreatorCraftItems extends Component {
         };
     }
 
+    onDismiss = () =>{
+        this.setState({
+            visible:false
+            })
+    }
+
     componentDidMount(){
         let obj={
             page:0,
@@ -81,7 +88,7 @@ export class CreatorCraftItems extends Component {
    }
 
     render() {
-        let modalClose = () => this.setState({ modalShow: false });
+        let modalClose = () => this.setState({ modalShow: false ,visible:true});
         let editModalClose = () => this.setState({ editModalShow: false });
 
         const { craftData, ReviewData}=this.state
@@ -121,8 +128,6 @@ export class CreatorCraftItems extends Component {
                 </Pagination.Item>,
             );
         }
-        
-        console.log(this.state)
 
         return (
             <div>
@@ -134,6 +139,9 @@ export class CreatorCraftItems extends Component {
                     {/* array of JSX items */}
                     {items}
                 </Masonry>
+                <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
+                        {this.props.removeItem && this.props.removeItem.message}
+                    </Alert>
                 <Pagination onClick={this.pageChanged} >{nums}</Pagination>
 
                 {/* reviews component- add here later */}
