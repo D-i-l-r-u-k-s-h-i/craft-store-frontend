@@ -11,8 +11,7 @@ import {
 import ConfirmDeleteModal from './confirmDeleteModal';
 import UpdateCraftComponent from './update_craft_component';
 import { Pagination} from 'react-bootstrap'
-import {Spinner} from 'react-bootstrap'
-import { Alert } from 'reactstrap';
+import {Spinner, Toast} from 'react-bootstrap'
 
 export class CreatorCraftItems extends Component {
     constructor(props){
@@ -27,7 +26,7 @@ export class CreatorCraftItems extends Component {
             modalShow: false,
             item:null,
             active:1,
-            visible:false,
+            show:false,
         }
     }
 
@@ -60,12 +59,6 @@ export class CreatorCraftItems extends Component {
         };
     }
 
-    onDismiss = () =>{
-        this.setState({
-            visible:false
-            })
-    }
-
     componentDidMount(){
         let obj={
             page:0,
@@ -87,6 +80,10 @@ export class CreatorCraftItems extends Component {
         this.props.getCreatorsCraftActions.getCreatorsCraft(obj)
    }
 
+    onDeleteModalShow=()=>{
+    this.setState({show:true})
+    }
+
     render() {
         let modalClose = () => this.setState({ modalShow: false ,visible:true});
         let editModalClose = () => this.setState({ editModalShow: false });
@@ -101,7 +98,7 @@ export class CreatorCraftItems extends Component {
             500: 1
         };
 
-        
+        let toastClose = () => this.setState({ show: false });
         
         let items = Array.isArray(craftData) &&craftData && craftData.map((item)=> {
             return <div key={item.craftId}>
@@ -131,6 +128,25 @@ export class CreatorCraftItems extends Component {
 
         return (
             <div>
+                <div
+                    aria-live="polite"
+                    aria-atomic="true"
+                    style={{
+                        position: 'relative',
+                        minHeight: '25px',
+                    }}>
+                    <Toast show={this.state.show} onClose={toastClose} autohide={true}
+                        style={{
+                            position: 'fixed',
+                            top: '100px',
+                            right: '100px',
+                            'z-index': '1'
+                        }}>
+                        <Toast.Header>
+                        </Toast.Header>
+                        <Toast.Body>{this.props.removeItem && this.props.removeItem.message}</Toast.Body>
+                    </Toast>
+                </div>
                 {craftData==null?<div className="text-center"><br/><Spinner animation="border" variant="info"/></div>:null}
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
@@ -139,14 +155,12 @@ export class CreatorCraftItems extends Component {
                     {/* array of JSX items */}
                     {items}
                 </Masonry>
-                <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
-                        {this.props.removeItem && this.props.removeItem.message}
-                    </Alert>
+                
                 <Pagination onClick={this.pageChanged} >{nums}</Pagination>
 
                 {/* reviews component- add here later */}
 
-                <ConfirmDeleteModal show={this.state.modalShow} onHide={modalClose} props={this.state.item}/>
+                <ConfirmDeleteModal show={this.state.modalShow} onHide={modalClose} props={this.state.item} onShow={this.onDeleteModalShow}/>
                 <UpdateCraftComponent show={this.state.editModalShow} onHide={editModalClose} props={this.state.item}/>
 
                 <hr/>

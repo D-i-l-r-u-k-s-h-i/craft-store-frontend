@@ -16,7 +16,7 @@ export class CreatorDashboardComponent extends Component {
     }
 
     render() {
-        console.log(this.props)
+        // console.log(this.props)
         let modalClose = () => this.setState({ modalShow: false });
         let ordersModalClose = () => this.setState({ ordersModalShow: false });
         let notificationsModalClose = () => this.setState({notificationsModalShow: false });
