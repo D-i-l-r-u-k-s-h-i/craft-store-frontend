@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter} from 'react-router-dom'
 import { signUpActions } from '../actions'
+import {Toast} from 'react-bootstrap'
 
 export class SignupComponent extends Component {
 
@@ -20,7 +21,8 @@ export class SignupComponent extends Component {
                 emailState:'',
                 confirm_passState:'',
             },
-            required_inputs:false
+            required_inputs:false,
+            visible:false,
         }
     }
     
@@ -78,14 +80,36 @@ export class SignupComponent extends Component {
 
     handleSignUpBtnClick=(e)=>{
         e.preventDefault();
-        debugger
+        this.setState({
+            visible:true
+        })
         this.props.signUpActions.signUp(this.state)
     }
 
     render() {
         console.log(this.state)
+        let toastClose = () => this.setState({ visible: false });
         return (
             <div className='background_container'>
+                <div
+                    aria-live="polite"
+                    aria-atomic="true"
+                    style={{
+                        position: 'relative',
+                        minHeight: '0px',
+                    }}>
+                    <Toast show={this.state.visible} onClose={toastClose} autohide={true}
+                        style={{
+                            position: 'fixed',
+                            top: '100px',
+                            right: '100px',
+                            'z-index': '1'
+                        }}>
+                        <Toast.Header>
+                        </Toast.Header>
+                        <Toast.Body>{this.props.SignUpData && this.props.SignUpData}</Toast.Body>
+                    </Toast>
+                </div>
                 <div className='app-card app-card-content'>
                     <div className='app-card-content-inner'>
                         <div className="app-form-item">

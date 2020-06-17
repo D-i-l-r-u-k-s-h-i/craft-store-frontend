@@ -25,7 +25,8 @@ export class UpdateCraftComponent extends Component {
                 priceState:'',
                 quantityState:''
             },
-            required_inputs:false
+            required_inputs:false,
+            isChecked:true
         }
     }
 
@@ -87,8 +88,16 @@ export class UpdateCraftComponent extends Component {
     }
 
     handleCheckBox=(e)=>{
-        console.log(e.target.value)
-        this.setState({availability:e.target.value,craftid:this.props.props.craftId})
+        console.log(e.currentTarget.value)
+
+        if(this.props.props && this.props.props.availabilityStatus==false || this.props.props && this.props.props.availabilityStatus=='false'){
+            this.setState({isChecked:true})
+        }
+        else{
+            this.setState({isChecked:false})
+        }
+
+        this.setState({isChecked:!this.state.isChecked, availability:e.currentTarget.value,craftid:this.props.props.craftId})
     }
 
     handleUpdateBtnClick=(e)=>{
@@ -137,8 +146,7 @@ export class UpdateCraftComponent extends Component {
                             </FormGroup>
                             <FormGroup check>
                                 <Label check>
-                                    <Input onChange={this.handleCheckBox} name="availabilityStatus" type="checkbox" />{' '}
-                                    Is Available
+                                    <Input onChange={this.handleCheckBox} name="availabilityStatus" type="checkbox" value={this.state.isChecked}/>{'Is Available'}
                                 </Label>
                             </FormGroup>
                             <FormGroup>

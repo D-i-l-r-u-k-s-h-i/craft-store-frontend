@@ -111,7 +111,7 @@ export class AllCraftItems extends Component {
                     <CardBody>
                         <CardTitle className="font-weight-bold">{item.ciName}
                         {item.availabilityStatus?<div class="badge badge-primary text-wrap">Available</div>:<div class="badge badge-danger text-wrap">Not Available</div>}
-                        {localStorage.getItem("user")==item.creator.creatorName || !localStorage.getItem("jwt")?<button type="button" class="btn btn-sm btn-warning ml-1" disabled>{item.creator.creatorName}</button>:<Link to={{
+                        {localStorage.getItem("user")== item.creator.creatorName || !localStorage.getItem("jwt")?<button type="button" class="btn btn-sm btn-warning ml-1" disabled>{item.creator.creatorName}</button>:<Link to={{
                         pathname: '/creatorprofile',
                         props: {
                             creator: item.creator

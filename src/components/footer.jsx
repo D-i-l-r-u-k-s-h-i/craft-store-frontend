@@ -4,6 +4,7 @@ function Footer() {
     return (
         // <div>
             <footer className="site-footer">
+                <br/>
                 <strong>C&#8476;&#8491;ft Store &#9752;&#8482;</strong><br/>
                 <table>
                     <tr>

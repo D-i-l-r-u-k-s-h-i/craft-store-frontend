@@ -6,7 +6,7 @@ import { withRouter} from 'react-router-dom'
 import PastOrdersCard from './past_orders_card';
 import { Card, CardText,CardImg,CardTitle,Row,Col} from 'reactstrap';
 import Rater from 'react-rater'
-import { Alert } from 'reactstrap'
+import {Toast} from 'react-bootstrap'
 
 export class ViewPastOrdersComponent extends Component {
     constructor(props) {
@@ -97,87 +97,102 @@ export class ViewPastOrdersComponent extends Component {
         this.props.addRatingActions.addRating(obj)
         
     }
-    onDismiss = () =>{
-        this.setState({
-            visible:false
-        })
-        
-    }
+
 
     render() {
         let {orderData,craftData,CreatorData}=this.state
+        let toastClose = () => this.setState({ visible: false });
         
         return (
-            <div className="bodycontainer">
-                <h1>Past orders</h1>
-                <hr/>
-                {orderData && orderData.map(property => <PastOrdersCard  props={property}/>)}
-                {/* key={property.craftId} */} <hr/>
-                <h1>All Crafts Purchased by you so far..</h1><br/>
-                {craftData && craftData.map(property => {
-                    return(
-                        <Row>
-                            <Col sm="10">
-                                <Card body outline color="warning">
-                                    <Row>
-                                        <Col md="2">
-                                            <CardImg
-                                                src={`data:image/png;base64,${property.imgFile}`}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <CardTitle><div className="font-weight-bold">{property.ciName}</div></CardTitle>
-                                            <CardText className="text-muted">Leave yor thoughts about the craft bellow.</CardText>
-                                            <form onSubmit={(e)=>{e.preventDefault();this.onSubmit(property.craftId)}}>
-                                                <div className="form-group">
-                                                    <textarea
-                                                        onChange={this.handleFieldChange}
-                                                        value={this.state.review}
-                                                        className="form-control"
-                                                        placeholder="Write a review..."
-                                                        name="message"
-                                                        rows="2"
-                                                    />
-                                                </div>
+            <div>
+                <div
+                    aria-live="polite"
+                    aria-atomic="true"
+                    style={{
+                        position: 'relative',
+                        minHeight: '25px',
+                    }}>
+                    <Toast show={this.state.visible} onClose={toastClose} autohide={true}
+                        style={{
+                            position: 'fixed',
+                            top: '100px',
+                            right: '100px',
+                            'z-index': '1'
+                        }}>
+                        <Toast.Header>
+                        </Toast.Header>
+                        <Toast.Body>{this.props.ReviewData && this.props.ReviewData}</Toast.Body>
+                    </Toast>
+                </div>
+                <div className="bodycontainer">
+                    <h1>Past orders</h1>
+                    <hr />
+                    {orderData && Array.isArray(orderData) && orderData.map(property => <PastOrdersCard props={property} />)}
+                    {/* key={property.craftId} */} <hr />
+                    <h1>All Crafts Purchased by you so far..</h1><br />
+                    {craftData && craftData.map(property => {
+                        return (
+                            <Row>
+                                <Col sm="10">
+                                    <Card body outline color="warning">
+                                        <Row>
+                                            <Col md="2">
+                                                <CardImg
+                                                    src={`data:image/png;base64,${property.imgFile}`}
+                                                />
+                                            </Col>
+                                            <Col>
+                                                <CardTitle><div className="font-weight-bold">{property.ciName}</div></CardTitle>
+                                                <CardText className="text-muted">Leave yor thoughts about the craft bellow.</CardText>
+                                                <form onSubmit={(e) => { e.preventDefault(); this.onSubmit(property.craftId) }}>
+                                                    <div className="form-group">
+                                                        <textarea
+                                                            onChange={this.handleFieldChange}
+                                                            value={this.state.review}
+                                                            className="form-control"
+                                                            placeholder="Write a review..."
+                                                            name="message"
+                                                            rows="2"
+                                                        />
+                                                    </div>
 
-                                                <div className="form-group">
-                                                    <button className="btn btn-primary">
-                                                        Comment &#10148;
+                                                    <div className="form-group">
+                                                        <button className="btn btn-primary">
+                                                            Comment &#10148;
                                                 </button>
-                                                    <Alert color="warning" isOpen={this.state.visible} toggle={this.onDismiss}>
-                                                        {this.props.ReviewData}
-                                                    </Alert>
-                                                </div>
-                                            </form>
-                                        </Col>
-                                    </Row>
-                                </Card>
-                            </Col>
-                        </Row>
-                    )
-                })}
-                
-                
-                <hr/>
-                <h1>All Crafts Creators You have Purchased from so far..</h1><br/>
-                {Array.isArray(CreatorData) && CreatorData && CreatorData.map(property=>{
-                    return(
-                        <Row>
-                            <Col sm="10">
-                                <Card body outline color="primary">
-                                    <CardTitle>{property.creatorName}</CardTitle>
-                                    <CardText>{property.creatorEmail}</CardText>
-                                    Rate your experience: <Rater total={5} interactive={true} rating={this.state.rating}
-                                // onRating={({rating}) => {this.handleRating(rating)}} 
-                                onRate={this.handleRating} 
-                                // onCancelRate={this.handleCancelRate}
-                                onClick={(e)=>{e.preventDefault();this.handleRateClick(property.creatorId)}} /><br />
-                                </Card>
-                            </Col>
-                        </Row>
-                    )
-                })}
-                <hr/>
+                                                    </div>
+                                                </form>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        )
+                    })}
+
+
+                    <hr />
+                    <h1>All Craft Creators You have Purchased from so far..</h1><br />
+                    {Array.isArray(CreatorData) && CreatorData && CreatorData.map(property => {
+                        return (
+                            <Row>
+                                <Col sm="10">
+                                    <Card body outline color="primary">
+                                        <CardTitle>{property.creatorName}</CardTitle>
+                                        <CardText>{property.creatorEmail}</CardText>
+                                        Rate your experience: <Rater total={5} interactive={true} 
+                                        rating={this.state.rating}
+                                            // onRating={({rating}) => {this.handleRating(rating)}} 
+                                            onRate={this.handleRating}
+                                            // onCancelRate={this.handleCancelRate}
+                                            onClick={(e) => { e.preventDefault(); this.handleRateClick(property.creatorId) }} /><br />
+                                    </Card>
+                                </Col>
+                            </Row>
+                        )
+                    })}
+                    <hr />
+                </div>
             </div>
         )
     }
